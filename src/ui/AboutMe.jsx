@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
-import Fancy from "./LondrinaText";
+import Fancy from "./Fancy";
+import Img from "./Img";
+import Line from "./Line";
 
 const Left = styled.div`
   display: flex;
@@ -25,39 +27,14 @@ const StyledText = styled.div`
 `;
 const MainHeader = styled.div`
   font-size: 3.2rem;
-  color: var(--color-brand-700);
 `;
 const Header = styled.div`
+  margin-top: 2.4rem;
   font-size: 2.8rem;
 `;
 const Text = styled.div`
+  margin-top: 1.2rem;
   font-size: 1.6rem;
-`;
-
-const Img = styled.img`
-  display: block;
-  max-width: 100%;
-  object-position: center;
-`;
-
-const Line = styled.div`
-  position: relative;
-  border-top: 1px solid var(--color-brand-500);
-
-  color: var(--color-brand-500);
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 50%; /* Position the circle in the middle of the line */
-    left: 0;
-    transform: translateY(-50%); /* Center the circle vertically */
-    width: 10px; /* Set the width and height of the circle */
-    height: 10px;
-    border-radius: 50%; /* Make it a circle */
-    background-color: var(--color-brand-500); /* Set the color of the circle */
-  }
-  transform: translateX(-20%);
 `;
 
 function AboutMe() {
@@ -67,7 +44,7 @@ function AboutMe() {
       <Left>
         <StyledText>
           <MainHeader>
-            <Fancy>I am Anna!</Fancy>
+            <Fancy color="brand-700">I am Anna!</Fancy>
           </MainHeader>
           <Line />
           <Header>I am so smart and clever and i can do everything!</Header>

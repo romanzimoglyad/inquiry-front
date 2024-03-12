@@ -7,8 +7,43 @@ font size
 1.6rem
 */
 
+// Smooth scrolling animation
+const headerEl = document.querySelector(".header");
+const allLinks = document.querySelectorAll("a:link");
+
+allLinks.forEach(function (link) {
+  link.addEventListener("click", function (e) {
+    e.preventDefault();
+    const href = link.getAttribute("href");
+
+    // Scroll back to top
+    if (href === "#")
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
+    // Scroll to other links
+    if (href !== "#" && href.startsWith("#")) {
+      const sectionEl = document.querySelector(href);
+      sectionEl.scrollIntoView({ behavior: "smooth" });
+    }
+
+    // Close mobile naviagtion
+    if (link.classList.contains("main-nav-link"))
+      headerEl.classList.toggle("nav-open");
+  });
+});
+
 const GlobalStyles = createGlobalStyle`
 :root {
+  --font-size-sm: 1.2rem;
+  --font-size-md: 1.4rem;
+  --font-size-lg: 1.6rem;
+  --font-size-llg: 2.2rem;
+  --font-size-lllg: 3rem;
+  --font-size-extra: 4rem;
+  
 /* Grey */
   --color-grey-0: #fff;
   --color-grey-50: #f9fafb;
@@ -79,7 +114,7 @@ body {
 
   transition: color 0.3s, background-color 0.3s;
   min-height: 100vh;
-  line-height: 1.5;
+  
   font-size: 1.6rem;
 }
 

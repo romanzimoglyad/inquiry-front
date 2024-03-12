@@ -5,6 +5,8 @@ import StyledNavLink from "./StyledNavLink";
 
 const StyledHeaderNav = styled.div`
   display: flex;
+  gap: 3.2rem;
+  font-size: var(--font-size-llg);
 `;
 
 function HeaderNav() {

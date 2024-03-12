@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import IntroductionBasic from "../ui/IntroductionBasic";
 import AboutMe from "../ui/AboutMe";
+import Achievements from "../ui/Achievements";
 
 const StyledIntroduction = styled.div`
   display: flex;
@@ -15,6 +16,7 @@ function Introduction() {
     <StyledIntroduction>
       <IntroductionBasic />
       <AboutMe />
+      <Achievements />
     </StyledIntroduction>
   );
 }
