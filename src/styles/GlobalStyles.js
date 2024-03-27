@@ -7,34 +7,6 @@ font size
 1.6rem
 */
 
-// Smooth scrolling animation
-const headerEl = document.querySelector(".header");
-const allLinks = document.querySelectorAll("a:link");
-
-allLinks.forEach(function (link) {
-  link.addEventListener("click", function (e) {
-    e.preventDefault();
-    const href = link.getAttribute("href");
-
-    // Scroll back to top
-    if (href === "#")
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-
-    // Scroll to other links
-    if (href !== "#" && href.startsWith("#")) {
-      const sectionEl = document.querySelector(href);
-      sectionEl.scrollIntoView({ behavior: "smooth" });
-    }
-
-    // Close mobile naviagtion
-    if (link.classList.contains("main-nav-link"))
-      headerEl.classList.toggle("nav-open");
-  });
-});
-
 const GlobalStyles = createGlobalStyle`
 :root {
   --font-size-sm: 1.2rem;
@@ -42,7 +14,7 @@ const GlobalStyles = createGlobalStyle`
   --font-size-lg: 1.6rem;
   --font-size-llg: 2.2rem;
   --font-size-lllg: 3rem;
-  --font-size-extra: 4rem;
+  --font-size-extra: 4.8rem;
   
 /* Grey */
   --color-grey-0: #fff;
@@ -106,6 +78,7 @@ const GlobalStyles = createGlobalStyle`
 
 html {
   font-size: 62.5%;
+  scroll-behavior: smooth;
 }
 
 body {

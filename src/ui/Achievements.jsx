@@ -6,11 +6,7 @@ import Row from "./Row";
 
 const Img = styled.img`
   display: block;
-  width: 2.4rem;
-
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1.5) translateX(-7px);
+  width: 4.2rem;
 `;
 const StyledAchievements = styled.div`
   margin-top: 4.2rem;
@@ -19,7 +15,7 @@ const StyledTable = styled.div`
   margin-top: 0.8rem;
   display: grid;
   gap: 2.4rem;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 `;
 const Header = styled.div`
   line-height: 1.6;
@@ -39,6 +35,19 @@ const Text = styled.div`
   font-size: var(--font-size-llg);
   font-weight: 500;
   color: var(--color-grey-800);
+  background-color: var(--color-brand-600);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem 1rem;
+  color: var(--color-grey-700);
+  min-width: 10rem;
+  text-align: center;
+`;
+const EducationRow = styled.div`
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 `;
 function Achievements() {
   return (
@@ -56,19 +65,19 @@ function Achievements() {
           </ArcRow>
           <ArcRow>
             <Img src="nis.jpeg"></Img>
-            <Text>Oxford</Text>
+            <Text>Brooks UK</Text>
           </ArcRow>
           <ArcRow>
             <Img src="nis.jpeg"></Img>
             <Text>Nagoya international school</Text>
           </ArcRow>
         </Row>
-        <Row>
+        <EducationRow>
           <Header>Education</Header>
-          <Text>PGCI</Text>
-          <Text>Selta</Text>
+          <Text>PGCE</Text>
+          <Text>QTC</Text>
           <Text>PhD</Text>
-        </Row>
+        </EducationRow>
       </StyledTable>
     </StyledAchievements>
   );

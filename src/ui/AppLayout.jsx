@@ -6,8 +6,8 @@ import Footer from "./Footer";
 const StyledAppLayout = styled.div`
   display: flex;
   flex-direction: column;
-
-  background-color: var(--color-brand-50);
+  position: relative;
+  background-image: linear-gradient(45deg, var(--color-brand-50), #ffffff);
 `;
 
 const Main = styled.main`
@@ -15,7 +15,7 @@ const Main = styled.main`
 `;
 
 const Container = styled.div`
-  max-width: 140rem;
+  max-width: 120rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;

@@ -34,6 +34,7 @@ const FooterLink = styled.div`
 
 const StyledFooter = styled.footer`
   padding: 2.4rem 0;
+  position: relative;
 
   border-top: 2px solid var(--color-brand-100);
   max-width: 120rem;
@@ -42,9 +43,38 @@ const StyledFooter = styled.footer`
   margin-top: 2.4rem;
 `;
 
+const PenImg = styled.img`
+  position: absolute;
+  display: block;
+  max-width: 100%;
+  width: 10rem;
+  height: 10rem;
+  bottom: 13%;
+  object-position: center;
+  transform: rotate(-10deg);
+  transform: rotate(-128.8deg);
+  border-radius: var(--border-radius-lg);
+`;
+
+const BooksImg = styled.img`
+  position: absolute;
+  right: -50%;
+  rotate: 10%;
+  bottom: 15%;
+  display: block;
+  max-width: 100%;
+  width: 10rem;
+  height: 10rem;
+  object-position: center;
+
+  border-radius: var(--border-radius-lg);
+`;
+
 function Footer() {
   return (
     <StyledFooter>
+      <BooksImg src="books.png"></BooksImg>
+
       <Row type="horizontal" gap="4.2rem">
         <Links>
           <Row type="horizontal" gap="2.4rem">
@@ -85,7 +115,7 @@ function Footer() {
                 <Logo />
               </Link>
             </FooterHeading>
-
+            <PenImg src="pen.png"></PenImg>
             <FooterText>
               Copyright &copy; <span className="year">2027</span>
             </FooterText>

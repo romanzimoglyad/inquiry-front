@@ -14,7 +14,7 @@ const Left = styled.div`
 const StyledAboutMe = styled.div`
   margin-top: 3.2rem;
   display: grid;
-  gap: 3.2rem;
+  gap: 9.6rem;
   grid-template-columns: 1fr 1fr;
 `;
 const StyledText = styled.div`
@@ -40,7 +40,7 @@ const Text = styled.div`
 function AboutMe() {
   const navigate = useNavigate();
   return (
-    <StyledAboutMe>
+    <StyledAboutMe id="aboutme">
       <Left>
         <StyledText>
           <MainHeader>

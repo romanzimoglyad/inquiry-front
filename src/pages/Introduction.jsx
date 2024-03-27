@@ -2,6 +2,9 @@ import styled from "styled-components";
 import IntroductionBasic from "../ui/IntroductionBasic";
 import AboutMe from "../ui/AboutMe";
 import Achievements from "../ui/Achievements";
+import Arch from "../ui/Schools";
+import Education from "../ui/Education";
+import Extra from "../ui/Extra";
 
 const StyledIntroduction = styled.div`
   display: flex;
@@ -16,7 +19,9 @@ function Introduction() {
     <StyledIntroduction>
       <IntroductionBasic />
       <AboutMe />
-      <Achievements />
+      {/* <Achievements /> */}
+      <Arch />
+      <Education />
     </StyledIntroduction>
   );
 }
