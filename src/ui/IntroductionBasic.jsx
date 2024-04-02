@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import AboutMe from "./AboutMe";
 import Fancy from "./Fancy";
 import Img from "./Img";
@@ -63,10 +63,12 @@ const FadingImg = styled.div`
     }
   }
 `;
+
 const Books = styled.div``;
 
 function IntroductionBasic() {
   const navigate = useNavigate();
+
   const images = ["introductionBasic.jpg", "anna.jpg"];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   useEffect(() => {

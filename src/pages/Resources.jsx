@@ -1,14 +1,24 @@
 import Lessons from "../features/lessons/Lessons";
 import LessonsHeader from "../features/lessons/LessonsHeader";
+import Button from "../ui/Button";
 import Header from "../ui/Header";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
+import { FaPlus } from "react-icons/fa";
 
 function Resources() {
   return (
     <>
-      <Row type="horizontal">
-        <Heading as="h1"> All resources</Heading>
+      <Row>
+        <Row type="horizontal">
+          <Heading as="h1"> All resources</Heading>
+          <div>
+            <Button>
+              <FaPlus /> Add new
+            </Button>
+          </div>
+        </Row>
+
         <LessonsHeader />
       </Row>
       <Lessons />

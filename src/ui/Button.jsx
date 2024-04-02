@@ -49,7 +49,10 @@ const variations = {
 };
 
 const Button = styled.button`
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
   text-decoration: none;
   border: none;
   border-radius: var(--border-radius-lg);

@@ -12,6 +12,8 @@ const StyledAppLayout = styled.div`
 
 const Main = styled.main`
   padding: 4rem 4.8rem 4.8rem;
+  overflow: scroll;
+  min-height: 100vh;
 `;
 
 const Container = styled.div`

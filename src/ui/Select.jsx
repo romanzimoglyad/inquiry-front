@@ -8,18 +8,20 @@ const StyledSelect = styled.select`
       props.type === "white"
         ? "var(--color-grey-100)"
         : "var(--color-grey-300)"};
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--border-radius-lg);
   background-color: var(--color-grey-0);
   font-weight: 500;
   box-shadow: var(--shadow-sm);
+
+  width: 100%;
 `;
 
 function Select({ options, value, onChange, ...props }) {
   return (
     <StyledSelect value={value} {...props} onChange={onChange}>
       {options.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
+        <option key={option.id} value={option.id}>
+          {option.name}
         </option>
       ))}
     </StyledSelect>

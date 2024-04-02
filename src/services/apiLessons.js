@@ -1,7 +1,21 @@
 import { API_URL } from "./inquiry";
 
-export async function getLessons() {
-  const request = { user_id: 791634 };
+export async function getLessons({
+  subjectValue,
+  unitValue,
+  skillValue,
+  conceptValue,
+}) {
+  console.log(subjectValue);
+  const request = {
+    user_id: 1,
+    filter: {
+      subjectId: subjectValue,
+      unitId: unitValue,
+      skillI: skillValue,
+      conceptId: conceptValue,
+    },
+  };
 
   const res = await fetch(`${API_URL}/lesson/list`, {
     method: "POST",

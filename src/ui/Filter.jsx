@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
+import Select from "./Select";
 
 const StyledFilter = styled.div`
   border: 1px solid var(--color-grey-100);
@@ -37,24 +38,33 @@ const FilterButton = styled.button`
 
 function Filter({ filterField, options }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  function handleClick(value) {
-    if (searchParams.get("page")) searchParams.set("page", 1);
-    searchParams.set(filterField, value);
+
+  const filter = searchParams.get(filterField || "");
+  function handleChange(e) {
+    searchParams.set(filterField, e.target.value);
     setSearchParams(searchParams);
   }
   return (
-    <StyledFilter>
-      {options.map((option) => (
-        <FilterButton
-          key={option.value}
-          active={option.value === searchParams.get(filterField)}
-          onClick={() => handleClick(option.value)}
-          disabled={option.value === searchParams.get(filterField)}
-        >
-          {option.label}
-        </FilterButton>
-      ))}
-    </StyledFilter>
+    <>
+      <Select
+        options={options}
+        type="white"
+        value={filter}
+        onChange={handleChange}
+      />
+      {/* <StyledFilter>
+        {options.map((option) => (
+          <FilterButton
+            key={option.id}
+            active={option.id === searchParams.get(filterField)}
+            onClick={() => handleClick(option.id)}
+            disabled={option.id === searchParams.get(filterField)}
+          >
+            {option.name}
+          </FilterButton>
+        ))}
+      </StyledFilter> */}
+    </>
   );
 }
 
