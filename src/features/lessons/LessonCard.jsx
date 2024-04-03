@@ -14,10 +14,13 @@ import { TbTimeDuration45 } from "react-icons/tb";
 import { TbTimeDuration30 } from "react-icons/tb";
 import { TbTimeDuration90 } from "react-icons/tb";
 import { HiOutlineWrenchScrewdriver } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
+import Duration from "../../ui/Duration";
 
 const StyledLessonCard = styled.div`
   display: flex;
   flex-direction: column;
+  cursor: pointer;
   min-height: 40rem;
   border: 1px solid var(--color-grey-200);
   box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.1);
@@ -29,13 +32,6 @@ const StyledLessonCard = styled.div`
     transform: translateY(-1.2rem);
     box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.15);
   }
-`;
-const Duration = styled.div`
-  position: absolute;
-  font-size: 3rem;
-  top: 3%;
-  left: 3%;
-  color: var(--color-brand-500);
 `;
 
 const CardFooter = styled.div`
@@ -55,7 +51,9 @@ const CardPair = styled.div`
   gap: 0.4rem;
   color: var(--color-brand-600);
 `;
-const CardPairValue = styled.div``;
+const CardPairValue = styled.div`
+  color: var(--color-grey-700);
+`;
 const LeftFooter = styled.div;
 
 const CardHeader = styled.div`
@@ -86,6 +84,7 @@ const CardImg = styled.div`
   font-weight: 500;
 `;
 function LessonCard({ lesson }) {
+  const navigate = useNavigate();
   const {
     id,
     name,
@@ -117,13 +116,16 @@ function LessonCard({ lesson }) {
       }}
       viewport={{ once: true }}
     >
-      <StyledLessonCard>
-        <Duration>
-          {duration == 60 && <TbTimeDuration60 />}
-          {duration == 45 && <TbTimeDuration45 />}
-          {duration == 30 && <TbTimeDuration30 />}
-          {duration == 90 && <TbTimeDuration90 />}
-        </Duration>
+      <StyledLessonCard
+        onClick={() => {
+          navigate(`/lessons/${id}`);
+          window.scrollTo({
+            top: 0,
+            behavior: "instant", // Optional: Add smooth scrolling behavior
+          });
+        }}
+      >
+        <Duration duration={duration}></Duration>
         <CardHeader>
           <CardName>
             <Fancy color="gray-400">{name}</Fancy>

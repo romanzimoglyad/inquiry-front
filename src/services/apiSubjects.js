@@ -1,7 +1,6 @@
 import { API_URL } from "./inquiry";
 
-export async function getSubjects(request) {
-  console.log(request);
+export async function getDictionary(request) {
   const res = await fetch(`${API_URL}/dictionary/list`, {
     method: "POST",
     body: JSON.stringify(request),

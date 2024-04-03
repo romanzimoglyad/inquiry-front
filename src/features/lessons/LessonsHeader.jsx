@@ -1,5 +1,4 @@
-import { useState } from "react";
-
+import { useSearch } from "../../context/SearchContext";
 import {
   useSkills,
   useSubjects,
@@ -11,15 +10,15 @@ import styled from "styled-components";
 import Filter from "../../ui/Filter";
 import Button from "../../ui/Button";
 import { useSearchParams } from "react-router-dom";
+import Input from "../../ui/Input";
 
 const StyledLessonsHeader = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 2rem;
 `;
-const Clear = styled.div`
+const Flex = styled.div`
   display: flex;
-
   align-items: end;
 `;
 
@@ -43,6 +42,7 @@ const Text = styled.div`
 export default function LessonsHeader() {
   // create the animations that will be applied
   // whenever the open state is toggled
+  const { search, setSearch } = useSearch("");
   const { subjects, isLoading: subjectsLoading } = useSubjects();
   const { units, isLoading: unitsLoading } = useUnits();
   const { skills, isLoading: skillsLoading } = useSkills();
@@ -50,6 +50,9 @@ export default function LessonsHeader() {
   const [searchParams, setSearchParams] = useSearchParams();
   if (subjectsLoading || unitsLoading || skillsLoading || conceptsLoading)
     return <Spinner />;
+
+  const anyFilter = searchParams.toString() === "" && search === "";
+
   return (
     // <div ref={scope}>
     //   <motion.button onClick={() => setOpen(!open)} whileTap={{ scale: 0.95 }}>
@@ -62,6 +65,16 @@ export default function LessonsHeader() {
     //   </ul>
     // </div>
     <StyledLessonsHeader>
+      <Flex>
+        <Input
+          type="text"
+          placeholder="Search lessons"
+          id="search"
+          autoComplete="username"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </Flex>
       <StyledLI>
         <Text>Unit</Text>
         <Filter filterField="unit" options={units.pairs} />
@@ -78,12 +91,17 @@ export default function LessonsHeader() {
         <Text>Skill</Text>
         <Filter filterField="skill" options={skills.pairs} />
       </StyledLI>
-      <Clear>
-        <div></div>
-        <Button onClick={() => setSearchParams({})} variation="secondary">
+      <Flex>
+        <Button
+          onClick={() => {
+            setSearchParams({});
+            setSearch("");
+          }}
+          variation={anyFilter ? "secondary" : "primary"}
+        >
           Clear all
         </Button>
-      </Clear>
+      </Flex>
       {/* <SortBy
       options={[
         { value: "startDate-desc", label: "Sort by date (recent first)" },

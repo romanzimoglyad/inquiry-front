@@ -1,19 +1,65 @@
+import { useEffect } from "react";
 import { API_URL } from "./inquiry";
+import { USER_ID } from "../utils/constants";
+
+export async function createEditLesson(newLesson, id) {
+  let lesson = { ...newLesson, userId: USER_ID };
+  console.log(lesson);
+  const res = await fetch(`${API_URL}/lesson/create`, {
+    method: "POST",
+    body: JSON.stringify(lesson),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  // fetch won't throw error on 400 errors (e.g. when URL is wrong), so we need to do it manually. This will then go into the catch block, where the message is set
+  if (!res.ok) throw Error("Failed creating lesson");
+
+  //   const { data } = await res.json();
+  //   console.log("data:", data);
+
+  return res.json();
+}
+
+export async function getLesson(id) {
+  const request = {
+    user_id: USER_ID,
+    id: id,
+  };
+  console.log(request);
+  const res = await fetch(`${API_URL}/lesson`, {
+    method: "POST",
+    body: JSON.stringify(request),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  // fetch won't throw error on 400 errors (e.g. when URL is wrong), so we need to do it manually. This will then go into the catch block, where the message is set
+  if (!res.ok) throw Error("Failed getting lesson");
+
+  //   const { data } = await res.json();
+  //   console.log("data:", data);
+
+  return res.json();
+}
 
 export async function getLessons({
   subjectValue,
   unitValue,
   skillValue,
   conceptValue,
+  search,
 }) {
-  console.log(subjectValue);
   const request = {
-    user_id: 1,
+    user_id: USER_ID,
     filter: {
       subjectId: subjectValue,
       unitId: unitValue,
-      skillI: skillValue,
+      skillId: skillValue,
       conceptId: conceptValue,
+      searchText: search,
     },
   };
 

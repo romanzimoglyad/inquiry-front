@@ -3,7 +3,7 @@ import Fancy from "./Fancy";
 import { FaQuestionCircle } from "react-icons/fa";
 
 const StyledMaterials = styled.div`
-  position: absolute;
+  position: relative;
   display: flex;
   margin-top: 3.2rem;
   align-items: center;
@@ -22,11 +22,12 @@ const Text = styled.div`
 
 const BookImg = styled.img`
   position: absolute;
-  bottom: 40%;
-  left: 90%;
+  bottom: 65%;
+  left: 65%;
   rotate: 20%;
   display: block;
   max-width: 100%;
+
   width: 10rem;
   height: 10rem;
   transform: rotate(30deg);

@@ -18,7 +18,11 @@ const Line = styled.div`
     background-color: var(--color-brand-500); /* Set the color of the circle */
   }
 
-  transform: translateX(-20%);
+  transform: translateX(${(props) => props.tX}%);
 `;
 
+Line.defaultProps = {
+  tX: -20,
+  left: 3,
+};
 export default Line;
