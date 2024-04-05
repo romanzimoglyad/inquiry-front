@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import AboutMe from "./AboutMe";
 import Fancy from "./Fancy";
 import Img from "./Img";

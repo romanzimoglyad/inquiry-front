@@ -1,12 +1,7 @@
 import { BsFileEarmarkText } from "react-icons/bs";
 import styled from "styled-components";
 import Fancy from "./Fancy";
-
-const StyledMaterialItem = styled.div`
-  display: flex;
-  gap: 1rem;
-  font-size: var(--font-size-llg);
-`;
+import { StyledMaterialItem } from "./Icon";
 
 const StyledIcon = styled.div`
   flex-grow: 0; /* Prevents item from growing */
@@ -14,11 +9,11 @@ const StyledIcon = styled.div`
   flex-basis: 2rem;
 `;
 
-function MaterialItem({ file }) {
+function MaterialItem({ file, hover }) {
   const index = file.name.indexOf("/"); // Find the index of the first occurrence of '/'
   const substring = file.name.substring(index + 1);
   return (
-    <StyledMaterialItem>
+    <StyledMaterialItem hover={hover}>
       <StyledIcon>
         <BsFileEarmarkText />
       </StyledIcon>

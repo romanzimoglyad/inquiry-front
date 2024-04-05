@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from "styled-components";
+import styled from "styled-components";
 import Img from "../../ui/Img";
 import Fancy from "../../ui/Fancy";
 import { FaChildReaching } from "react-icons/fa6";
@@ -18,18 +18,15 @@ import { useNavigate } from "react-router-dom";
 import Duration from "../../ui/Duration";
 import { BsFileEarmarkText } from "react-icons/bs";
 import MaterialItem from "../../ui/MaterialItem";
-import { StyledMaterialItem } from "../../ui/Icon";
-import { useState } from "react";
 
 const StyledLessonCard = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  align-items: stretch;
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
   min-height: 40rem;
   border: 1px solid var(--color-grey-200);
   box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.1);
-  border-radius: var(--border-radius-extra);
+  border-radius: var(--border-radius-md);
   background-color: var(--color-grey-0);
   transition: all 0.4s;
   position: relative;
@@ -37,7 +34,6 @@ const StyledLessonCard = styled.div`
     transform: translateY(-1.2rem);
     box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.15);
   }
-  grid-template-rows: 150px auto;
 `;
 
 const DownSide = styled.div`
@@ -61,7 +57,7 @@ const Materials = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
 
-  padding: 1.6rem 1rem;
+  padding: 1.6rem 2.4rem;
 `;
 
 const CardPair = styled.div`
@@ -69,66 +65,42 @@ const CardPair = styled.div`
   display: flex;
   gap: 0.4rem;
   color: var(--color-brand-600);
-  font-size: ${({ hover, scale }) => (hover ? scale + "rem" : "2rem")};
-  transition: font-size 0.3s ease;
 `;
 const CardPairValue = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
   color: var(--color-grey-700);
 `;
 const LeftFooter = styled.div;
 
+const CardHeader = styled.div`
+  padding: 1.6rem 2.4rem;
+  padding-bottom: 1rem;
+  display: grid;
+  grid-auto-rows: minmax(2rem, auto);
+  gap: 1.6rem;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 2px solid var(--color-brand-200);
+`;
 const CardName = styled.div`
-  font-size: var(--font-size-extra);
+  font-size: var(--font-size-llg);
   font-weight: 600;
   align-items: center;
   display: flex;
   justify-content: center;
-  padding: 1.6rem 2.4rem;
-  ${({ shaking }) =>
-    shaking &&
-    css`
-      animation: ${shakeAnimation} 0.5s;
-    `}
 `;
-
-const shakeAnimation = keyframes`
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
-`;
-
 const CardDescription = styled.div`
+  font-size: var(--font-size-lg);
   font-weight: 600;
   grid-column: 1/-1;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  border-bottom: 2px solid var(--color-brand-200);
-  padding: 1.6rem 2.4rem;
-  font-size: ${({ hover }) =>
-    hover ? "var(--font-size-llg)" : "var(--font-size-lg)"};
-  transition: font-size 0.3s ease;
 `;
 const CardImg = styled.div`
-  padding: 1rem 1rem;
+  grid-column: 2 / -1;
+  grid-row: 1 / -1;
   font-size: var(--font-size-md);
   font-weight: 500;
-
-  max-height: 15rem;
-`;
-const StyleItem = styled.div`
-  display: flex;
-  gap: 1rem;
+  max-height: 20rem;
 `;
 
-function LessonCard({ lesson }) {
-  const [isHover, setIsHover] = useState(false);
+function LessonCardV1({ lesson }) {
   const navigate = useNavigate();
   const {
     id,
@@ -164,9 +136,6 @@ function LessonCard({ lesson }) {
       viewport={{ once: true }}
     >
       <StyledLessonCard
-        shaking={isHover}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
         onClick={() => {
           navigate(`/lessons/${id}`);
           window.scrollTo({
@@ -175,62 +144,52 @@ function LessonCard({ lesson }) {
           });
         }}
       >
-        <Duration duration={duration} top="-0.3" left="-0.3"></Duration>
-
-        <CardName shaking={isHover}>
-          <Fancy color="gray-900">{name}</Fancy>
-        </CardName>
-
-        <CardImg>
-          <Img
-            scale={isHover}
-            src={image && image?.url != "" ? image.url : "../img_demo.jpeg"}
-          />
-        </CardImg>
-
-        <CardDescription hover={isHover}>
-          <span>{description}</span>
-        </CardDescription>
-        <CardFooter>
-          <CardPair hover={isHover} scale="5">
-            <StyleItem>
+        <Duration duration={duration}></Duration>
+        <CardHeader>
+          <CardName>
+            <Fancy color="gray-400">{name}</Fancy>
+          </CardName>
+          <CardDescription>
+            <span>{description}</span>
+          </CardDescription>
+          <CardImg>
+            <Img
+              src={image && image?.url != "" ? image.url : "../img_demo.jpeg"}
+            />
+          </CardImg>
+        </CardHeader>
+        <DownSide>
+          <CardFooter>
+            <CardPair>
               <MdOutlineSubject />
-            </StyleItem>
-            <CardPairValue>{subject.name}</CardPairValue>
-          </CardPair>
-          <CardPair hover={isHover} scale="4.5">
-            <StyleItem>
+              <CardPairValue>{subject.name}</CardPairValue>
+            </CardPair>
+            <CardPair>
               <HiOutlineWrenchScrewdriver />
-            </StyleItem>
-            <CardPairValue>{concept.name}</CardPairValue>
-          </CardPair>
-          <CardPair hover={isHover} scale="4">
-            <StyleItem>
+              <CardPairValue>{concept.name}</CardPairValue>
+            </CardPair>
+            <CardPair>
               <CiMonitor />
-            </StyleItem>
-            <CardPairValue>{unit.name}</CardPairValue>
-          </CardPair>
-          <CardPair hover={isHover} scale="3.5">
-            <StyleItem>
+              <CardPairValue>{unit.name}</CardPairValue>
+            </CardPair>
+            <CardPair>
               <GiSkills />
-            </StyleItem>
-            <CardPairValue>{skill.name}</CardPairValue>
-          </CardPair>
-          <CardPair hover={isHover} scale="3">
-            <StyleItem>
+              <CardPairValue>{skill.name}</CardPairValue>
+            </CardPair>
+            <CardPair>
               <FaChildReaching />
-            </StyleItem>
-            <CardPairValue>Grade {gradeId}</CardPairValue>
-          </CardPair>
-        </CardFooter>
-        <Materials>
-          {files?.map((file) => (
-            <MaterialItem hover={isHover} file={file} key={file.name} />
-          ))}
-        </Materials>
+              <CardPairValue>Grade {gradeId}</CardPairValue>
+            </CardPair>
+          </CardFooter>
+          <Materials>
+            {files?.map((file) => (
+              <MaterialItem file={file} key={file.name} />
+            ))}
+          </Materials>
+        </DownSide>
       </StyledLessonCard>
     </motion.div>
   );
 }
 
-export default LessonCard;
+export default LessonCardV1;

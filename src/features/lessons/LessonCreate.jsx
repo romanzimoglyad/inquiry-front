@@ -311,7 +311,6 @@ function LessonCreate() {
             />
             {imgPreview && (
               <div>
-                <p>Selected file: {imgPreview.name}</p>
                 {img && (
                   <img
                     src={imgPreview}
@@ -334,8 +333,6 @@ function LessonCreate() {
                 // required: "This field is required",
               })}
             />
-
-            <Line tx="-5"></Line>
           </StyledDesc>
 
           <MainText>

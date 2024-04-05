@@ -60,6 +60,7 @@ const GlobalStyles = createGlobalStyle`
   --border-radius-sm: 5px;
   --border-radius-md: 7px;
   --border-radius-lg: 9px;
+  --border-radius-extra: 20px;
 
 
   
@@ -79,6 +80,10 @@ const GlobalStyles = createGlobalStyle`
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--color-brand-100);
 }
 
 body {
