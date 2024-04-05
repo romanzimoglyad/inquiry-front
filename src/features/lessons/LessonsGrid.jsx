@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import LessonCart from "./LessonCard";
+import LessonCard from "./LessonCard";
 
 const StyledLessonGrid = styled.div`
   display: grid;
@@ -10,7 +10,7 @@ function LessonsGrid({ lessons }) {
   return (
     <StyledLessonGrid>
       {lessons.map((lesson) => (
-        <LessonCart lesson={lesson} key={lesson.id} />
+        <LessonCard lesson={lesson} key={lesson.id} />
       ))}
     </StyledLessonGrid>
   );

@@ -6,7 +6,6 @@ import { useEffect } from "react";
 
 export function useLesson() {
   const { lessonId } = useParams();
-  console.log(lessonId);
   const {
     isLoading,
     data: lesson,

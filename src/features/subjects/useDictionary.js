@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getLessons } from "../../services/apiLessons";
-import { getDictionary } from "../../services/apiSubjects";
+import { getDictionary } from "../../services/apiDictionary";
 import { TYPE_SUBJECT } from "../../utils/constants";
 import { TYPE_UNIT } from "../../utils/constants";
 import { TYPE_SKILL } from "../../utils/constants";
@@ -14,6 +14,7 @@ export function useSubjects() {
   } = useQuery({
     queryKey: ["subject"],
     queryFn: () => getDictionary({ type: TYPE_SUBJECT }),
+    cacheTime: 60000,
   });
 
   return { isLoading, error, subjects };

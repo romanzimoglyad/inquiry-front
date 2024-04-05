@@ -1,25 +1,73 @@
-import { useEffect } from "react";
 import { API_URL } from "./inquiry";
 import { USER_ID } from "../utils/constants";
 
-export async function createEditLesson(newLesson, id) {
-  let lesson = { ...newLesson, userId: USER_ID };
-  console.log(lesson);
-  const res = await fetch(`${API_URL}/lesson/create`, {
-    method: "POST",
-    body: JSON.stringify(lesson),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export async function createEditLesson(newLesson) {
+  try {
+    const id = await createOrder(newLesson);
+    const res = await storeFiles(newLesson.image, newLesson.files, id);
+    return res;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
 
-  // fetch won't throw error on 400 errors (e.g. when URL is wrong), so we need to do it manually. This will then go into the catch block, where the message is set
-  if (!res.ok) throw Error("Failed creating lesson");
+async function storeFiles(image, files, id) {
+  try {
+    const formData = new FormData();
+    if (image) {
+      formData.append("file", image);
+    }
+    const uploadImage = {
+      userId: USER_ID,
+      lessonId: id,
+    };
 
-  //   const { data } = await res.json();
-  //   console.log("data:", data);
+    formData.append("json", JSON.stringify(uploadImage));
 
-  return res.json();
+    for (let i = 0; i < files.length; i++) {
+      formData.append("files", files[i]);
+    }
+
+    const res = await fetch(`${API_URL}/lesson/file`, {
+      method: "POST",
+      body: formData,
+    });
+
+    // fetch won't throw error on 400 errors (e.g. when URL is wrong), so we need to do it manually. This will then go into the catch block, where the message is set
+    if (!res.ok) throw Error("Failed storing file");
+
+    //   const { data } = await res.json();
+    //   console.log("data:", data);
+
+    return res.json();
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+async function createOrder(newLesson) {
+  try {
+    let lesson = {
+      ...newLesson,
+      image: null,
+      files: null,
+      userId: USER_ID,
+    };
+
+    const res = await fetch(`${API_URL}/lesson/create`, {
+      method: "POST",
+      body: JSON.stringify(lesson),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const { id } = await res.json();
+    return id;
+  } catch (error) {
+    console.error("Error fetching data from first API:", error);
+    throw error; // Propagate the error
+  }
 }
 
 export async function getLesson(id) {
@@ -27,7 +75,7 @@ export async function getLesson(id) {
     user_id: USER_ID,
     id: id,
   };
-  console.log(request);
+
   const res = await fetch(`${API_URL}/lesson`, {
     method: "POST",
     body: JSON.stringify(request),

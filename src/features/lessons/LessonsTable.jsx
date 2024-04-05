@@ -26,8 +26,6 @@ const StyledTable = styled.div`
 `;
 // id, name, createdAt, description, gradeId, subjectId
 function LessonsTable({ lessons }) {
-  console.log(lessons);
-
   if (!lessons.length) return <Empty>No data</Empty>;
   return (
     <StyledTable>

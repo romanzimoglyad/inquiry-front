@@ -31,6 +31,7 @@ import {
   LessonImg,
   HeadingGroup,
 } from "../../ui/Lesson";
+import MaterialItem from "../../ui/MaterialItem";
 
 function LessonDetail() {
   const { isLoading, lesson } = useLesson();
@@ -50,7 +51,10 @@ function LessonDetail() {
     skill,
     duration,
     text,
+    image,
+    materials: files,
   } = lesson.lesson;
+
   console.log(lesson.lesson);
   return (
     <StyledLesson>
@@ -93,21 +97,21 @@ function LessonDetail() {
           </IconsItem>
         </StyledIcons>
         <LessonImg>
-          <Img src="../img_demo.jpeg" />
+          <Img
+            src={image && image.url != "" ? image.url : "../img_demo.jpeg"}
+          />
         </LessonImg>
 
         <StyledDesc>
           {description}
-          <Line tX="-5"></Line>
+          <Line tx="-5"></Line>
         </StyledDesc>
 
         <MainText>{text}</MainText>
         <Materials>
-          <IoIosDocument />
-
-          <IoIosDocument />
-
-          <IoIosDocument />
+          {files?.map((file) => (
+            <MaterialItem file={file} key={file.name} />
+          ))}
         </Materials>
         <Footer>
           <CiCalendarDate />

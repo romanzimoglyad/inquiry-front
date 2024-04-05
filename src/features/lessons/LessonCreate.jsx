@@ -78,7 +78,11 @@ const Materials = styled.div`
   padding: 1rem 1rem;
 `;
 
-const StyledFiles = styled.div``;
+const StyledFiles = styled.div`
+  // padding: 1rem 1rem;
+  /* border: 2px dashed #cccccc;
+  border-radius: var(--border-radius-lg); */
+`;
 const StyledDrop = styled.div`
   position: relative;
   width: 100%;
@@ -97,21 +101,9 @@ const ClickableFile = styled.div`
   gap: 1rem;
 `;
 function LessonCreate() {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [img, setImg] = useState(null);
+  const [imgPreview, setImgPreview] = useState(null);
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-    console.log(selectedFile);
-    // Read the file and generate a data URL or blob URL
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      const url = event.target.result;
-      setImageUrl(url);
-    };
-    reader.readAsDataURL(file);
-  };
   const [files, setFiles] = useState([]);
 
   const onDrop = (event) => {
@@ -146,9 +138,30 @@ function LessonCreate() {
 
   if (subjectsLoading || unitsLoading || skillsLoading || conceptsLoading)
     return <Spinner />;
+
+  const handleFileChange = (event) => {
+    console.log("");
+    const file = event.target.files[0];
+    console.log(file);
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const result = e.target.result;
+      setImgPreview(result);
+    };
+
+    reader.readAsDataURL(file);
+    setImg(file);
+  };
   function onSubmit(data) {
+    const image = img;
+    console.log(image);
     createLesson(
-      { ...data, files },
+      {
+        ...data,
+        files,
+        image,
+      },
       {
         onSuccess: (data) => {
           reset();
@@ -169,7 +182,6 @@ function LessonCreate() {
 
   const renderFileIcon = (file) => {
     if (!file) return null;
-    console.log(file);
     const fileType = file.type;
     if (fileType.startsWith("image")) {
       return <BsFileEarmarkImage />;
@@ -291,18 +303,18 @@ function LessonCreate() {
             <FileInput
               disabled={isCreating}
               id="image"
-              onChange={handleFileChange}
               accept="image/*"
-              {...register("image", {
-                // required: "This field is required",
-              })}
+              onChange={handleFileChange}
+              // {...register("image", {
+              //   // required: "This field is required",
+              // })}
             />
-            {selectedFile && (
+            {imgPreview && (
               <div>
-                <p>Selected file: {selectedFile.name}</p>
-                {imageUrl && (
+                <p>Selected file: {imgPreview.name}</p>
+                {img && (
                   <img
-                    src={imageUrl}
+                    src={imgPreview}
                     alt="Preview"
                     style={{ maxWidth: "100%", maxHeight: "200px" }}
                   />
@@ -323,7 +335,7 @@ function LessonCreate() {
               })}
             />
 
-            <Line tX="-5"></Line>
+            <Line tx="-5"></Line>
           </StyledDesc>
 
           <MainText>

@@ -16,6 +16,8 @@ import { TbTimeDuration90 } from "react-icons/tb";
 import { HiOutlineWrenchScrewdriver } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import Duration from "../../ui/Duration";
+import { BsFileEarmarkText } from "react-icons/bs";
+import MaterialItem from "../../ui/MaterialItem";
 
 const StyledLessonCard = styled.div`
   display: flex;
@@ -34,8 +36,21 @@ const StyledLessonCard = styled.div`
   }
 `;
 
+const DownSide = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+`;
 const CardFooter = styled.div`
-  grid-column: 1/-1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  padding: 1.6rem 2.4rem;
+`;
+
+const Materials = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -82,7 +97,9 @@ const CardImg = styled.div`
   grid-row: 1 / -1;
   font-size: var(--font-size-md);
   font-weight: 500;
+  max-height: 20rem;
 `;
+
 function LessonCard({ lesson }) {
   const navigate = useNavigate();
   const {
@@ -97,8 +114,10 @@ function LessonCard({ lesson }) {
     concept,
     unit,
     skill,
+    image,
+    materials: files,
   } = lesson;
-
+  console.log(files);
   return (
     <motion.div
       className="card"
@@ -130,33 +149,44 @@ function LessonCard({ lesson }) {
           <CardName>
             <Fancy color="gray-400">{name}</Fancy>
           </CardName>
-          <CardDescription>{description}</CardDescription>
+          <CardDescription>
+            <span>{description}</span>
+          </CardDescription>
           <CardImg>
-            <Img src="img_demo.jpeg" />
+            <Img
+              src={image && image?.url != "" ? image.url : "../img_demo.jpeg"}
+            />
           </CardImg>
         </CardHeader>
-        <CardFooter>
-          <CardPair>
-            <MdOutlineSubject />
-            <CardPairValue>{subject.name}</CardPairValue>
-          </CardPair>
-          <CardPair>
-            <HiOutlineWrenchScrewdriver />
-            <CardPairValue>{concept.name}</CardPairValue>
-          </CardPair>
-          <CardPair>
-            <CiMonitor />
-            <CardPairValue>{unit.name}</CardPairValue>
-          </CardPair>
-          <CardPair>
-            <GiSkills />
-            <CardPairValue>{skill.name}</CardPairValue>
-          </CardPair>
-          <CardPair>
-            <FaChildReaching />
-            <CardPairValue>Grade {gradeId}</CardPairValue>
-          </CardPair>
-        </CardFooter>
+        <DownSide>
+          <CardFooter>
+            <CardPair>
+              <MdOutlineSubject />
+              <CardPairValue>{subject.name}</CardPairValue>
+            </CardPair>
+            <CardPair>
+              <HiOutlineWrenchScrewdriver />
+              <CardPairValue>{concept.name}</CardPairValue>
+            </CardPair>
+            <CardPair>
+              <CiMonitor />
+              <CardPairValue>{unit.name}</CardPairValue>
+            </CardPair>
+            <CardPair>
+              <GiSkills />
+              <CardPairValue>{skill.name}</CardPairValue>
+            </CardPair>
+            <CardPair>
+              <FaChildReaching />
+              <CardPairValue>Grade {gradeId}</CardPairValue>
+            </CardPair>
+          </CardFooter>
+          <Materials>
+            {files?.map((file) => (
+              <MaterialItem file={file} key={file.name} />
+            ))}
+          </Materials>
+        </DownSide>
       </StyledLessonCard>
     </motion.div>
   );
