@@ -44,6 +44,10 @@ export const StyledIcons = styled.div`
 export const LessonImg = styled.div`
   grid-column: 3 / -1;
   grid-row: 1 / span 2;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 `;
 export const Materials = styled.div`
   font-size: 10rem;
@@ -63,6 +67,7 @@ export const IconsItem = styled.div`
   flex-direction: column;
   color: var(--color-brand-600);
   font-size: var(--font-size-llg);
+  gap: 1rem;
 `;
 export const IconsItemTop = styled.div`
   display: flex;

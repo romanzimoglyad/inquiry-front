@@ -47,9 +47,10 @@ const Header = styled.div`
 `;
 
 const FadingImg = styled.div`
-  transition: opacity 0.5s ease-in-out;
-  animation: fade 3s infinite;
-  @keyframes fade {
+  position: relative;
+  border-radius: var(--border-radius-llg);
+  object-fit: cover;
+  /* @keyframes fade {
     0% {
       opacity: 0;
     }
@@ -61,7 +62,16 @@ const FadingImg = styled.div`
     100% {
       opacity: 0;
     }
-  }
+  } */
+`;
+
+const FloatingImg = styled.img`
+  position: absolute;
+  top: ${(props) => props.top || "0"};
+  left: ${(props) => props.left || "0"};
+  border-radius: var(--border-radius-lg);
+  max-width: 100%;
+  max-height: 100%;
 `;
 
 const Books = styled.div``;
@@ -69,7 +79,11 @@ const Books = styled.div``;
 function IntroductionBasic() {
   const navigate = useNavigate();
 
-  const images = ["introductionBasic.jpg", "anna.jpg"];
+  const images = [
+    { src: "introductionBasic.jpg", top: "30%", left: "-10%" },
+    { src: "anna.jpg", top: "100%", left: "20%" },
+    { src: "Anna_standing.jpg", top: "-10%", left: "60%" },
+  ];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => {
@@ -101,7 +115,14 @@ function IntroductionBasic() {
           <Materials />
         </Text>
         <FadingImg>
-          <Img src={images[currentImageIndex]}></Img>
+          {images.map((image, index) => (
+            <FloatingImg
+              key={index}
+              src={image.src}
+              top={image.top}
+              left={image.left}
+            />
+          ))}
         </FadingImg>
       </StyledIntroductionBasic>
     </>

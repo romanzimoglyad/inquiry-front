@@ -387,7 +387,7 @@ function LessonCreate() {
       </StyledLesson>
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button variation="secondary" type="reset" onClick={moveBack}>
           Cancel
         </Button>
         <Button> Add lesson</Button>

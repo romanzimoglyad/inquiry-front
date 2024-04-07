@@ -40,7 +40,7 @@ const Text = styled.div`
 `;
 const Bubble = styled.div`
   color: var(--color-grey-800);
-  background-color: var(--color-brand-100);
+
   border-radius: var(--border-radius-lg);
   padding: 1rem 1rem;
   color: var(--color-grey-700);

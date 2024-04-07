@@ -56,7 +56,7 @@ function AboutMe() {
         <Button onClick={() => navigate("/about")}>Learn more</Button>
       </Left>
 
-      <Img src="anna.jpg" />
+      {/* <Img src="anna.jpg" /> */}
     </StyledAboutMe>
   );
 }

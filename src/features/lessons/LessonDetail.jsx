@@ -32,6 +32,15 @@ import {
   HeadingGroup,
 } from "../../ui/Lesson";
 import MaterialItem from "../../ui/MaterialItem";
+import Button from "../../ui/Button";
+import Row from "../../ui/Row";
+
+const Buttons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  gap: 1rem;
+`;
 
 function LessonDetail() {
   const { isLoading, lesson } = useLesson();
@@ -118,6 +127,12 @@ function LessonDetail() {
           <StyledDate> {format(new Date(createdAt), "MM/dd/yyyy")}</StyledDate>
         </Footer>
       </StyledMain>
+      <Buttons type="horizontal">
+        <Button variation="secondary" onClick={moveBack}>
+          Edit
+        </Button>
+        <Button variation="danger">Delete</Button>
+      </Buttons>
     </StyledLesson>
   );
 }
