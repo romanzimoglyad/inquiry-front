@@ -15,6 +15,7 @@ import { GiSkills } from "react-icons/gi";
 import Img from "../../ui/Img";
 import Line from "../../ui/Line";
 import { format } from "date-fns";
+import { useDeleteLesson } from "./useDeleteLesson";
 import {
   StyledLesson,
   StyledLessonHeader,
@@ -34,6 +35,9 @@ import {
 import MaterialItem from "../../ui/MaterialItem";
 import Button from "../../ui/Button";
 import Row from "../../ui/Row";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import { useEffect } from "react";
 
 const Buttons = styled.div`
   display: flex;
@@ -43,8 +47,17 @@ const Buttons = styled.div`
 `;
 
 function LessonDetail() {
+  const { isDeleting, deleteLesson } = useDeleteLesson();
   const { isLoading, lesson } = useLesson();
   const moveBack = useMoveBack();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "instant",
+    });
+  }, [moveBack]);
+
   if (isLoading) return <Spinner />;
   if (!lesson) return <Empty resource="lesson" />;
   const {
@@ -67,72 +80,86 @@ function LessonDetail() {
   console.log(lesson.lesson);
   return (
     <StyledLesson>
-      <StyledLessonHeader>
-        <HeadingGroup>
-          <Heading as="h1">{name}</Heading>
-          <Duration duration={duration} top={-35} left={-12}></Duration>
-        </HeadingGroup>
-        <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
-      </StyledLessonHeader>
-      <StyledMain>
-        <StyledIcons>
-          <IconsItem>
-            <IconsItemTop>
-              <MdOutlineSubject />
-              Subject
-            </IconsItemTop>
-            <IconsItemText>{subject.name}</IconsItemText>
-          </IconsItem>
-          <IconsItem>
-            <IconsItemTop>
-              <HiOutlineWrenchScrewdriver />
-              Concept
-            </IconsItemTop>
-            <IconsItemText>{concept.name}</IconsItemText>
-          </IconsItem>
-          <IconsItem>
-            <IconsItemTop>
-              <CiMonitor />
-              Unit
-            </IconsItemTop>
-            <IconsItemText>{unit.name}</IconsItemText>
-          </IconsItem>
-          <IconsItem>
-            <IconsItemTop>
-              <GiSkills />
-              Skill
-            </IconsItemTop>
-            <IconsItemText>{skill.name}</IconsItemText>
-          </IconsItem>
-        </StyledIcons>
-        <LessonImg>
-          <Img
-            src={image && image.url != "" ? image.url : "../img_demo.jpeg"}
+      <Modal>
+        <StyledLessonHeader>
+          <HeadingGroup>
+            <Heading as="h1">{name}</Heading>
+            <Duration duration={duration} top={-35} left={-12}></Duration>
+          </HeadingGroup>
+          <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
+        </StyledLessonHeader>
+        <StyledMain>
+          <StyledIcons>
+            <IconsItem>
+              <IconsItemTop>
+                <MdOutlineSubject />
+                Subject
+              </IconsItemTop>
+              <IconsItemText>{subject.name}</IconsItemText>
+            </IconsItem>
+            <IconsItem>
+              <IconsItemTop>
+                <HiOutlineWrenchScrewdriver />
+                Concept
+              </IconsItemTop>
+              <IconsItemText>{concept.name}</IconsItemText>
+            </IconsItem>
+            <IconsItem>
+              <IconsItemTop>
+                <CiMonitor />
+                Unit
+              </IconsItemTop>
+              <IconsItemText>{unit.name}</IconsItemText>
+            </IconsItem>
+            <IconsItem>
+              <IconsItemTop>
+                <GiSkills />
+                Skill
+              </IconsItemTop>
+              <IconsItemText>{skill.name}</IconsItemText>
+            </IconsItem>
+          </StyledIcons>
+          <LessonImg>
+            <Img
+              src={image && image.url != "" ? image.url : "../img_demo.jpeg"}
+            />
+          </LessonImg>
+
+          <StyledDesc>
+            {description}
+            <Line tx="-5"></Line>
+          </StyledDesc>
+
+          <MainText>{text}</MainText>
+          <Materials>
+            {files?.map((file) => (
+              <MaterialItem file={file} key={file.name} />
+            ))}
+          </Materials>
+          <Footer>
+            <CiCalendarDate />
+            <StyledDate>
+              {" "}
+              {format(new Date(createdAt), "MM/dd/yyyy")}
+            </StyledDate>
+          </Footer>
+        </StyledMain>
+        <Buttons type="horizontal">
+          <Button variation="secondary" onClick={moveBack}>
+            Edit
+          </Button>
+          <Modal.Open opens="delete">
+            <Button variation="danger">Delete</Button>
+          </Modal.Open>
+        </Buttons>
+        <Modal.Window name="delete">
+          <ConfirmDelete
+            resourceName="lesson"
+            disabled={isDeleting}
+            onConfirm={() => deleteLesson(id)}
           />
-        </LessonImg>
-
-        <StyledDesc>
-          {description}
-          <Line tx="-5"></Line>
-        </StyledDesc>
-
-        <MainText>{text}</MainText>
-        <Materials>
-          {files?.map((file) => (
-            <MaterialItem file={file} key={file.name} />
-          ))}
-        </Materials>
-        <Footer>
-          <CiCalendarDate />
-          <StyledDate> {format(new Date(createdAt), "MM/dd/yyyy")}</StyledDate>
-        </Footer>
-      </StyledMain>
-      <Buttons type="horizontal">
-        <Button variation="secondary" onClick={moveBack}>
-          Edit
-        </Button>
-        <Button variation="danger">Delete</Button>
-      </Buttons>
+        </Modal.Window>
+      </Modal>
     </StyledLesson>
   );
 }

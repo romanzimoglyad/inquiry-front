@@ -11,7 +11,9 @@ const StyledIcon = styled.div`
 
 function MaterialItem({ file, hover }) {
   const index = file.name.indexOf("/"); // Find the index of the first occurrence of '/'
-  const substring = file.name.substring(index + 1);
+  let substring = file.name.substring(index + 1);
+
+  substring = substring.substring(0, substring.lastIndexOf("."));
   return (
     <StyledMaterialItem hover={hover}>
       <StyledIcon>

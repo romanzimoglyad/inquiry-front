@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import AboutMe from "./AboutMe";
 import Fancy from "./Fancy";
 import Img from "./Img";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Row from "./Row";
 import Button from "./Button";
 import Materials from "./Materials";
@@ -15,6 +15,7 @@ const StyledIntroductionBasic = styled.div`
   font-size: var(--font-size-llg);
   word-break: break-word;
   position: relative;
+  transition: all 0.4s;
 `;
 
 const ButtonArea = styled.div`
@@ -50,19 +51,6 @@ const FadingImg = styled.div`
   position: relative;
   border-radius: var(--border-radius-llg);
   object-fit: cover;
-  /* @keyframes fade {
-    0% {
-      opacity: 0;
-    }
-
-    50% {
-      opacity: 1;
-    }
-
-    100% {
-      opacity: 0;
-    }
-  } */
 `;
 
 const FloatingImg = styled.img`
@@ -77,6 +65,8 @@ const FloatingImg = styled.img`
 const Books = styled.div``;
 
 function IntroductionBasic() {
+  const [shaking, setShaking] = useState(false);
+  const fancyRef = useRef(null);
   const navigate = useNavigate();
 
   const images = [
@@ -84,30 +74,45 @@ function IntroductionBasic() {
     { src: "anna.jpg", top: "100%", left: "20%" },
     { src: "Anna_standing.jpg", top: "-10%", left: "60%" },
   ];
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 3000);
 
-    return () => clearInterval(interval);
-  }, [images.length]);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (fancyRef.current) {
+        const { top, bottom } = fancyRef.current.getBoundingClientRect();
+        const windowHeight =
+          window.innerHeight || document.documentElement.clientHeight;
+        // If the top of the element is in the viewport
+        if (top >= 0 && bottom <= windowHeight) {
+          setShaking(true);
+        } else {
+          setShaking(false);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
       <StyledIntroductionBasic>
         <Text>
           <Header>
-            Dive into a new form of <Fancy color="brand-700">education</Fancy>{" "}
+            Dive into a new form of{" "}
+            <Fancy ref={fancyRef} shaking={shaking} color="brand-700" s>
+              education
+            </Fancy>{" "}
             with me
           </Header>
           <Div>
             Enjoy all my <Fancy color="brand-700">learning materials</Fancy> and
-            {` `}
             <Fancy color="brand-700">lessons</Fancy>
           </Div>
           <ButtonArea>
-            <Button onClick={() => navigate("/resources")}>Try it now</Button>
+            <Button size="extra" onClick={() => navigate("/resources")}>
+              Try it now
+            </Button>
             <Button as="a" href="#aboutme" variation="secondary">
               Learn more &darr;
             </Button>

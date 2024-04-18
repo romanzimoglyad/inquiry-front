@@ -20,12 +20,13 @@ import { BsFileEarmarkText } from "react-icons/bs";
 import MaterialItem from "../../ui/MaterialItem";
 import { StyledMaterialItem } from "../../ui/Icon";
 import { useState } from "react";
+import Button from "../../ui/Button";
 
 const StyledLessonCard = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   align-items: stretch;
-  cursor: pointer;
+
   min-height: 40rem;
   border: 1px solid var(--color-grey-200);
   box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.1);
@@ -83,7 +84,7 @@ const LeftFooter = styled.div;
 
 const CardName = styled.div`
   font-size: var(--font-size-extra);
-  font-weight: 600;
+  font-weight: 400;
   align-items: center;
   display: flex;
   justify-content: center;
@@ -127,6 +128,10 @@ const StyleItem = styled.div`
   gap: 1rem;
 `;
 
+const CardButton = styled.div`
+  opacity: ${({ hover }) => (hover ? 1 : 0)};
+`;
+
 function LessonCard({ lesson }) {
   const [isHover, setIsHover] = useState(false);
   const navigate = useNavigate();
@@ -164,16 +169,8 @@ function LessonCard({ lesson }) {
       viewport={{ once: true }}
     >
       <StyledLessonCard
-        shaking={isHover}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        onClick={() => {
-          navigate(`/lessons/${id}`);
-          window.scrollTo({
-            top: 0,
-            behavior: "instant", // Optional: Add smooth scrolling behavior
-          });
-        }}
       >
         <Duration duration={duration} top="-0.3" left="-0.3"></Duration>
 
@@ -183,7 +180,6 @@ function LessonCard({ lesson }) {
 
         <CardImg>
           <Img
-            scale={isHover}
             src={image && image?.url != "" ? image.url : "../img_demo.jpeg"}
           />
         </CardImg>
@@ -228,6 +224,21 @@ function LessonCard({ lesson }) {
             <MaterialItem hover={isHover} file={file} key={file.name} />
           ))}
         </Materials>
+        <CardButton hover={isHover}>
+          <Button
+            variation="circle"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/lessons/${id}`);
+              window.scrollTo({
+                top: 0,
+                behavior: "instant", // Optional: Add smooth scrolling behavior
+              });
+            }}
+          >
+            View
+          </Button>
+        </CardButton>
       </StyledLessonCard>
     </motion.div>
   );

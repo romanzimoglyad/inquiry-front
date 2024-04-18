@@ -7,20 +7,15 @@ const StyledHeaderNav = styled.div`
   display: flex;
   gap: 3.2rem;
   font-size: var(--font-size-llg);
+  color: var(--color-grey-800);
 `;
 
 function HeaderNav() {
   return (
     <StyledHeaderNav>
-      <StyledNavLink to="/resources">
-        <span>Resources</span>
-      </StyledNavLink>
-      <StyledNavLink to="/about">
-        <span>About</span>
-      </StyledNavLink>
-      <StyledNavLink to="/contacts">
-        <span>Contact</span>
-      </StyledNavLink>
+      <StyledNavLink to="/resources">Resources</StyledNavLink>
+      <StyledNavLink to="/about">About</StyledNavLink>
+      <StyledNavLink to="/contacts">Contact</StyledNavLink>
     </StyledHeaderNav>
   );
 }

@@ -18,6 +18,11 @@ const sizes = {
     font-size: var(--font-size-lg);
     padding: 1rem 1.2rem;
   `,
+  extra: css`
+    font-weight: 800;
+    font-size: var(--font-size-lllg);
+    padding: 1rem 1.2rem;
+  `,
 };
 
 const variations = {
@@ -44,6 +49,24 @@ const variations = {
 
     &:hover {
       background-color: var(--color-red-800);
+    }
+  `,
+  circle: css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    border-radius: 100%;
+    color: var(--color-grey-0);
+    background-color: var(--color-brand-500);
+    width: 7rem;
+    height: 7rem;
+    font-size: var(--font-size-llg);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    &:hover {
+      background-color: var(--color-brand-700);
     }
   `,
 };

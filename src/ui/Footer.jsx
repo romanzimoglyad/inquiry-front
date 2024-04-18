@@ -81,27 +81,24 @@ function Footer() {
             <Link href="https://www.instagram.com/your_username">
               <CiInstagram
                 style={{
-                  height: "var(--font-size-llg)",
-                  width: "var(--font-size-llg)",
-                  color: "var(--color-grey-900)",
+                  height: "var(--font-size-lllg)",
+                  width: "var(--font-size-lllg)",
                 }}
               />
             </Link>
             <Link href="https://www.instagram.com/your_username">
               <CiFacebook
                 style={{
-                  height: "var(--font-size-llg)",
-                  width: "var(--font-size-llg)",
-                  color: "var(--color-grey-900)",
+                  height: "var(--font-size-lllg)",
+                  width: "var(--font-size-lllg)",
                 }}
               />
             </Link>
             <Link href="https://www.instagram.com/your_username">
               <CiTwitter
                 style={{
-                  height: "var(--font-size-llg)",
-                  width: "var(--font-size-llg)",
-                  color: "var(--color-grey-900)",
+                  height: "var(--font-size-lllg)",
+                  width: "var(--font-size-lllg)",
                 }}
               />
             </Link>
@@ -115,9 +112,9 @@ function Footer() {
                 <Logo />
               </Link>
             </FooterHeading>
-            <PenImg src="pen.png"></PenImg>
+            {/* <PenImg src="pen.png"></PenImg> */}
             <FooterText>
-              Copyright &copy; <span className="year">2027</span>
+              Copyright &copy; <span className="year">2024</span>
             </FooterText>
           </Row>
           <Row>

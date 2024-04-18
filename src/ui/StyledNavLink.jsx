@@ -6,8 +6,8 @@ const StyledNavLink = styled(NavLink)`
   &:visited {
     display: flex;
     align-items: center;
-    color: var(--color-grey-600);
-    font-weight: 500;
+    color: var(--color-grey-800);
+    font-weight: 600;
     transition: all 0.3s;
   }
 
@@ -21,9 +21,9 @@ const StyledNavLink = styled(NavLink)`
   }
 
   & svg {
-    width: 2.4rem;
-    height: 2.4rem;
-    color: var(--color-grey-400);
+    width: 5rem;
+    height: 5rem;
+    color: var(--color-grey-800);
     transition: all 0.3s;
   }
 

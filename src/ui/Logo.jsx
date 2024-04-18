@@ -5,20 +5,23 @@ import styled from "styled-components";
 
 const StyledLogo = styled.div`
   display: flex;
-  gap: 0.4rem;
+  gap: 1rem;
   justify-content: left;
+  font-size: var(--font-size-lllg);
   align-items: center;
+  font-weight: 400;
 `;
 
-function Logo({ height, width, color }) {
+function Logo() {
+  //{ height, width, color }
   return (
     <StyledLogo>
       <SiStudyverse
-        style={{
-          height: height,
-          width: width,
-          color: color,
-        }}
+      // style={{
+      //   height: height,
+      //   width: width,
+      //   color: color,
+      // }}
       ></SiStudyverse>
       <Fancy>AnnaZim</Fancy>
     </StyledLogo>

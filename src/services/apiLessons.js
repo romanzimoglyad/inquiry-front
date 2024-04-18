@@ -70,6 +70,23 @@ async function createOrder(newLesson) {
   }
 }
 
+export async function deleteLesson(id) {
+  const request = {
+    user_id: USER_ID,
+    id: id,
+  };
+
+  const res = await fetch(`${API_URL}/lesson/delete`, {
+    method: "POST",
+    body: JSON.stringify(request),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  // fetch won't throw error on 400 errors (e.g. when URL is wrong), so we need to do it manually. This will then go into the catch block, where the message is set
+  if (!res.ok) throw Error("Failed getting lesson");
+}
+
 export async function getLesson(id) {
   const request = {
     user_id: USER_ID,

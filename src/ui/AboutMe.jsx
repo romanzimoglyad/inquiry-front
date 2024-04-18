@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Fancy from "./Fancy";
 import Img from "./Img";
 import Line from "./Line";
+import Stats from "./Stat";
 
 const Left = styled.div`
   display: flex;
@@ -14,8 +15,8 @@ const Left = styled.div`
 const StyledAboutMe = styled.div`
   margin-top: 3.2rem;
   display: grid;
-  gap: 9.6rem;
-  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  grid-template-columns: auto 1fr;
 `;
 const StyledText = styled.div`
   max-width: 40rem;
@@ -41,6 +42,7 @@ function AboutMe() {
   const navigate = useNavigate();
   return (
     <StyledAboutMe id="aboutme">
+      <Stats />
       <Left>
         <StyledText>
           <MainHeader>
