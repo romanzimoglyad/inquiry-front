@@ -150,7 +150,8 @@ function LessonCard({ lesson }) {
     image,
     materials: files,
   } = lesson;
-  console.log(files);
+  const stringHover = isHover ? "true" : "";
+
   return (
     <motion.div
       className="card"
@@ -174,7 +175,7 @@ function LessonCard({ lesson }) {
       >
         <Duration duration={duration} top="-0.3" left="-0.3"></Duration>
 
-        <CardName shaking={isHover}>
+        <CardName shaking={isHover ? "true" : ""}>
           <Fancy color="gray-900">{name}</Fancy>
         </CardName>
 
@@ -184,35 +185,35 @@ function LessonCard({ lesson }) {
           />
         </CardImg>
 
-        <CardDescription hover={isHover}>
+        <CardDescription hover={stringHover}>
           <span>{description}</span>
         </CardDescription>
         <CardFooter>
-          <CardPair hover={isHover} scale="5">
+          <CardPair hover={stringHover} scale="5">
             <StyleItem>
               <MdOutlineSubject />
             </StyleItem>
             <CardPairValue>{subject.name}</CardPairValue>
           </CardPair>
-          <CardPair hover={isHover} scale="4.5">
+          <CardPair hover={stringHover} scale="4.5">
             <StyleItem>
               <HiOutlineWrenchScrewdriver />
             </StyleItem>
             <CardPairValue>{concept.name}</CardPairValue>
           </CardPair>
-          <CardPair hover={isHover} scale="4">
+          <CardPair hover={stringHover} scale="4">
             <StyleItem>
               <CiMonitor />
             </StyleItem>
             <CardPairValue>{unit.name}</CardPairValue>
           </CardPair>
-          <CardPair hover={isHover} scale="3.5">
+          <CardPair hover={stringHover} scale="3.5">
             <StyleItem>
               <GiSkills />
             </StyleItem>
             <CardPairValue>{skill.name}</CardPairValue>
           </CardPair>
-          <CardPair hover={isHover} scale="3">
+          <CardPair hover={stringHover} scale="3">
             <StyleItem>
               <FaChildReaching />
             </StyleItem>
@@ -221,10 +222,10 @@ function LessonCard({ lesson }) {
         </CardFooter>
         <Materials>
           {files?.map((file) => (
-            <MaterialItem hover={isHover} file={file} key={file.name} />
+            <MaterialItem hover={stringHover} file={file} key={file.name} />
           ))}
         </Materials>
-        <CardButton hover={isHover}>
+        <CardButton hover={stringHover}>
           <Button
             variation="circle"
             onClick={(e) => {

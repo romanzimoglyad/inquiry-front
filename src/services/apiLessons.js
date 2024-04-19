@@ -1,17 +1,74 @@
 import { API_URL } from "./inquiry";
 import { USER_ID } from "../utils/constants";
 
-export async function createEditLesson(newLesson) {
+export async function createLesson(newLesson) {
   try {
-    const id = await createOrder(newLesson);
-    const res = await storeFiles(newLesson.image, newLesson.files, id);
+    const id = await createOnlyLesson(newLesson);
+    const res = await updateFiles(
+      newLesson?.image,
+      newLesson?.oldFiles,
+      newLesson?.files,
+      id
+    );
     return res;
   } catch (error) {
     console.error("Error:", error);
   }
 }
 
-async function storeFiles(image, files, id) {
+export async function updateLesson(newLessonData, id) {
+  console.log(id);
+  try {
+    const res1 = await updateOnlyLesson(newLessonData, id);
+    await updateFiles(
+      newLessonData.image,
+      newLessonData.oldFiles,
+      newLessonData.files,
+      id
+    );
+    return res1;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+// async function storeFiles(image, files, id) {
+//   try {
+//     const formData = new FormData();
+//     if (image) {
+//       formData.append("file", image);
+//     }
+//     const uploadImage = {
+//       userId: USER_ID,
+//       lessonId: id,
+//     };
+
+//     formData.append("json", JSON.stringify(uploadImage));
+
+//     for (let i = 0; i < files.length; i++) {
+//       formData.append("files", files[i]);
+//     }
+
+//     const res = await fetch(`${API_URL}/lesson/file`, {
+//       method: "POST",
+//       body: formData,
+//     });
+
+//     // fetch won't throw error on 400 errors (e.g. when URL is wrong), so we need to do it manually. This will then go into the catch block, where the message is set
+//     if (!res.ok) throw Error("Failed storing file");
+
+//     //   const { data } = await res.json();
+//     //   console.log("data:", data);
+
+//     return res.json();
+//   } catch (error) {
+//     console.error("Error:", error);
+//   }
+// }
+
+async function updateFiles(image, oldFiles, files, id) {
+  console.log(oldFiles);
+  console.log(files);
   try {
     const formData = new FormData();
     if (image) {
@@ -24,10 +81,19 @@ async function storeFiles(image, files, id) {
 
     formData.append("json", JSON.stringify(uploadImage));
 
-    for (let i = 0; i < files.length; i++) {
-      formData.append("files", files[i]);
+    if (files) {
+      console.log(1);
+      for (let i = 0; i < files.length; i++) {
+        formData.append("files", files[i]);
+      }
     }
 
+    if (oldFiles) {
+      console.log(2);
+      for (let i = 0; i < oldFiles.length; i++) {
+        formData.append("oldFiles", oldFiles[i].name);
+      }
+    }
     const res = await fetch(`${API_URL}/lesson/file`, {
       method: "POST",
       body: formData,
@@ -39,18 +105,41 @@ async function storeFiles(image, files, id) {
     //   const { data } = await res.json();
     //   console.log("data:", data);
 
-    return res.json();
+    return;
   } catch (error) {
     console.error("Error:", error);
   }
 }
 
-async function createOrder(newLesson) {
+async function updateOnlyLesson(newLesson, id) {
+  console.log(newLesson);
+  try {
+    let lesson = {
+      id: id,
+      ...newLesson,
+      userId: USER_ID,
+    };
+
+    const res = await fetch(`${API_URL}/lesson/update`, {
+      method: "POST",
+      body: JSON.stringify(lesson),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const { resp } = await res.json();
+    return resp;
+  } catch (error) {
+    console.error("Error fetching data from first API:", error);
+    throw error; // Propagate the error
+  }
+}
+
+async function createOnlyLesson(newLesson) {
   try {
     let lesson = {
       ...newLesson,
-      image: null,
-      files: null,
       userId: USER_ID,
     };
 
@@ -88,6 +177,10 @@ export async function deleteLesson(id) {
 }
 
 export async function getLesson(id) {
+  if (!id) {
+    console.log("no id");
+    return null;
+  }
   const request = {
     user_id: USER_ID,
     id: id,

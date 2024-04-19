@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createEditLesson } from "../../services/apiLessons";
+import { createLesson as apiCreateLesson } from "../../services/apiLessons";
 import toast from "react-hot-toast";
 
 export function useCreateLesson() {
   const queryClient = useQueryClient();
   const { mutate: createLesson, isCreating } = useMutation({
-    mutationFn: createEditLesson,
+    mutationFn: apiCreateLesson,
     onSuccess: () => {
       toast.success("New lesson successfully created");
       queryClient.invalidateQueries({ queryKey: "lessons" });

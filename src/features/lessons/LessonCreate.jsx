@@ -52,10 +52,12 @@ import Textarea from "../../ui/Textarea";
 import { format } from "date-fns";
 import Input from "../../ui/Input";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { useCallback, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import FileInput from "../../ui/FileInput";
+import { useLesson } from "./useLesson";
+import { useUpdateLesson } from "./useUpdateLesson";
 
 const StyledTrashBin = styled.div`
   color: red;
@@ -103,9 +105,19 @@ const ClickableFile = styled.div`
 function LessonCreate() {
   const [img, setImg] = useState(null);
   const [imgPreview, setImgPreview] = useState(null);
+  const { lessonId } = useParams();
+  console.log(lessonId);
+  const { createLesson, isCreating } = useCreateLesson();
+  const { updateLesson, isUpdating } = useUpdateLesson();
+  const isEditSession = lessonId != "" && lessonId != undefined;
+  console.log(isEditSession);
+  const { isLoading: lessonLoading, lesson } = useLesson();
 
+  console.log(lesson);
   const [files, setFiles] = useState([]);
 
+  const oldMaterials = lesson?.lesson?.materials ? lesson.lesson.materials : [];
+  const [oldFiles, setOldFiles] = useState([...oldMaterials]);
   const onDrop = (event) => {
     event.preventDefault();
     const newFiles = Array.from(event.dataTransfer.files);
@@ -128,15 +140,53 @@ function LessonCreate() {
   const { units, isLoading: unitsLoading } = useUnits();
   const { skills, isLoading: skillsLoading } = useSkills();
   const { concepts, isLoading: conceptsLoading } = useConcepts();
+  let lessonForEdit;
 
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+      // Standard-compliant browsers will use the following message
+      event.returnValue = ""; // This is necessary to support Chrome, Safari, and other browsers
+      return ""; // This will be shown to the user as the confirmation message
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+  if (isEditSession) {
+    lessonForEdit = {
+      description: lesson?.lesson?.description,
+      name: lesson?.lesson?.name,
+      unitId: lesson?.lesson?.unit?.id,
+      text: lesson?.lesson?.text,
+      conceptId: lesson?.lesson?.concept?.id,
+      skillId: lesson?.lesson?.skill?.id,
+      subjectId: lesson?.lesson?.subject?.id,
+      imageUrl: lesson?.lesson?.image?.url,
+    };
+    // if (lesson?.lesson?.materials) {
+    //   setOldFiles();
+    //   console.log(oldfiles);
+    // }
+  }
+  console.log(lessonForEdit);
+  console.log(isEditSession);
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: {},
+    defaultValues: isEditSession ? lessonForEdit : {},
   });
+
   const { errors } = formState;
 
-  const { createLesson, isCreating } = useCreateLesson();
-
-  if (subjectsLoading || unitsLoading || skillsLoading || conceptsLoading)
+  if (
+    lessonLoading ||
+    subjectsLoading ||
+    unitsLoading ||
+    skillsLoading ||
+    conceptsLoading
+  )
     return <Spinner />;
 
   const handleFileChange = (event) => {
@@ -154,21 +204,43 @@ function LessonCreate() {
     setImg(file);
   };
   function onSubmit(data) {
-    const image = img;
-    console.log(image);
-    createLesson(
-      {
-        ...data,
-        files,
-        image,
-      },
-      {
-        onSuccess: (data) => {
-          reset();
+    if (isEditSession) {
+      const image = img;
+      console.log(image);
+      updateLesson(
+        {
+          newLessonData: {
+            ...data,
+            oldFiles,
+            files,
+            image,
+          },
+          id: lessonId,
         },
-      }
-    );
-    navigate("/resources");
+        {
+          onSuccess: (data) => {
+            reset();
+          },
+        }
+      );
+      navigate("/resources");
+    } else {
+      const image = img;
+      console.log(image);
+      createLesson(
+        {
+          ...data,
+          files,
+          image,
+        },
+        {
+          onSuccess: (data) => {
+            reset();
+          },
+        }
+      );
+      navigate("/resources");
+    }
   }
   function onError(errors) {
     //console.log(errors);
@@ -178,6 +250,11 @@ function LessonCreate() {
     event.stopPropagation();
     const updatedFiles = files.filter((_, i) => i !== index);
     setFiles(updatedFiles);
+  };
+  const handleDeleteOldFile = (index) => {
+    event.stopPropagation();
+    const updatedFiles = oldFiles.filter((_, i) => i !== index);
+    setOldFiles(updatedFiles);
   };
 
   const renderFileIcon = (file) => {
@@ -309,6 +386,21 @@ function LessonCreate() {
               //   // required: "This field is required",
               // })}
             />
+            {isEditSession && !imgPreview && (
+              <div>
+                {
+                  <img
+                    src={
+                      lessonForEdit &&
+                      lessonForEdit.imageUrl &&
+                      lessonForEdit.imageUrl != ""
+                        ? lessonForEdit.imageUrl
+                        : "../../img_demo.jpeg"
+                    }
+                  />
+                }
+              </div>
+            )}
             {imgPreview && (
               <div>
                 {img && (
@@ -349,6 +441,25 @@ function LessonCreate() {
           </MainText>
           <Materials>
             <StyledFiles>
+              {oldFiles &&
+                oldFiles.map((file, index) => {
+                  const ind = file.name.indexOf("/");
+                  let substring = file.name.substring(ind + 1);
+
+                  return (
+                    <ClickableFile key={index}>
+                      <div>
+                        {renderFileIcon(file)}
+                        <span>{substring}</span>
+                      </div>
+                      <StyledTrashBin>
+                        <AiFillDelete
+                          onClick={() => handleDeleteOldFile(index)}
+                        />
+                      </StyledTrashBin>
+                    </ClickableFile>
+                  );
+                })}
               {files &&
                 files.map((file, index) => (
                   <ClickableFile key={index}>
@@ -390,7 +501,7 @@ function LessonCreate() {
         <Button variation="secondary" type="reset" onClick={moveBack}>
           Cancel
         </Button>
-        <Button> Add lesson</Button>
+        <Button> {isEditSession ? "Update lesson" : "Add lesson"}</Button>
       </FormRow>
     </Form>
   );

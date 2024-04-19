@@ -4,7 +4,6 @@ import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
 import Heading from "../../ui/Heading";
 import ButtonText from "../../ui/ButtonText";
-import { IoIosDocument } from "react-icons/io";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
 import Duration from "../../ui/Duration";
@@ -34,10 +33,11 @@ import {
 } from "../../ui/Lesson";
 import MaterialItem from "../../ui/MaterialItem";
 import Button from "../../ui/Button";
-import Row from "../../ui/Row";
+
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Buttons = styled.div`
   display: flex;
@@ -47,6 +47,7 @@ const Buttons = styled.div`
 `;
 
 function LessonDetail() {
+  const navigate = useNavigate();
   const { isDeleting, deleteLesson } = useDeleteLesson();
   const { isLoading, lesson } = useLesson();
   const moveBack = useMoveBack();
@@ -145,7 +146,12 @@ function LessonDetail() {
           </Footer>
         </StyledMain>
         <Buttons type="horizontal">
-          <Button variation="secondary" onClick={moveBack}>
+          <Button
+            variation="secondary"
+            onClick={() => {
+              navigate(`/lessons/create/${id}`);
+            }}
+          >
             Edit
           </Button>
           <Modal.Open opens="delete">

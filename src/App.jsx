@@ -35,6 +35,10 @@ function App() {
               <Route path="resources" element={<Resources />} />
               <Route path="lessons/:lessonId" element={<Lesson />} />
               <Route path="lessons/create" element={<CreateLesson />} />
+              <Route
+                path="lessons/create/:lessonId"
+                element={<CreateLesson />}
+              />
               <Route path="about" element={<About />} />
               <Route path="contacts" element={<Contacts />} />
             </Route>
