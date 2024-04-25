@@ -9,10 +9,8 @@ import { GiSkills } from "react-icons/gi";
 import { CiMonitor } from "react-icons/ci";
 
 import { motion } from "framer-motion";
-import { TbTimeDuration60 } from "react-icons/tb";
-import { TbTimeDuration45 } from "react-icons/tb";
-import { TbTimeDuration30 } from "react-icons/tb";
-import { TbTimeDuration90 } from "react-icons/tb";
+import { FaChildren } from "react-icons/fa6";
+
 import { HiOutlineWrenchScrewdriver } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import Duration from "../../ui/Duration";
@@ -109,6 +107,7 @@ const CardDescription = styled.div`
   grid-column: 1/-1;
   align-items: center;
   display: flex;
+  min-height: 5rem;
   justify-content: center;
   border-bottom: 2px solid var(--color-brand-200);
   padding: 1.6rem 2.4rem;
@@ -131,6 +130,14 @@ const StyleItem = styled.div`
 const CardButton = styled.div`
   opacity: ${({ hover }) => (hover ? 1 : 0)};
 `;
+const DotContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Dot = styled.div`
+  margin-right: 0.5rem;
+`;
 
 function LessonCard({ lesson }) {
   const [isHover, setIsHover] = useState(false);
@@ -151,6 +158,8 @@ function LessonCard({ lesson }) {
     materials: files,
   } = lesson;
   const stringHover = isHover ? "true" : "";
+  const displayedFiles = files.slice(0, 3); // Get the first three lessons
+  const extraFilesCount = files.length - 3;
 
   return (
     <motion.div
@@ -189,43 +198,54 @@ function LessonCard({ lesson }) {
           <span>{description}</span>
         </CardDescription>
         <CardFooter>
-          <CardPair hover={stringHover} scale="5">
+          <CardPair hover={stringHover} scale="2.1">
             <StyleItem>
               <MdOutlineSubject />
             </StyleItem>
             <CardPairValue>{subject.name}</CardPairValue>
           </CardPair>
-          <CardPair hover={stringHover} scale="4.5">
+          <CardPair hover={stringHover} scale="2.1">
             <StyleItem>
               <HiOutlineWrenchScrewdriver />
             </StyleItem>
             <CardPairValue>{concept.name}</CardPairValue>
           </CardPair>
-          <CardPair hover={stringHover} scale="4">
+          <CardPair hover={stringHover} scale="2.1">
             <StyleItem>
               <CiMonitor />
             </StyleItem>
             <CardPairValue>{unit.name}</CardPairValue>
           </CardPair>
-          <CardPair hover={stringHover} scale="3.5">
+          <CardPair hover={stringHover} scale="2.1">
             <StyleItem>
               <GiSkills />
             </StyleItem>
             <CardPairValue>{skill.name}</CardPairValue>
           </CardPair>
-          <CardPair hover={stringHover} scale="3">
+          <CardPair hover={stringHover} scale="2.1">
             <StyleItem>
-              <FaChildReaching />
+              <FaChildren />
             </StyleItem>
             <CardPairValue>Grade {gradeId}</CardPairValue>
           </CardPair>
         </CardFooter>
         <Materials>
-          {files?.map((file) => (
-            <MaterialItem hover={stringHover} file={file} key={file.name} />
+          {displayedFiles?.map((file) => (
+            <MaterialItem
+              hover={isHover}
+              file={file}
+              key={file.name}
+              isCard={true}
+            />
           ))}
+          {extraFilesCount > 0 && (
+            <DotContainer>
+              <Dot>...</Dot>
+              <Dot>{extraFilesCount} more</Dot>
+            </DotContainer>
+          )}
         </Materials>
-        <CardButton hover={stringHover}>
+        <CardButton hover={isHover}>
           <Button
             variation="circle"
             onClick={(e) => {

@@ -7,6 +7,7 @@ import Education from "../ui/Education";
 import Extra from "../ui/Extra";
 import Fun from "../ui/Stat";
 import Stats from "../ui/Stat";
+import InquiryWall from "../ui/InquiryWall";
 
 const StyledIntroduction = styled.div`
   display: flex;
@@ -22,6 +23,7 @@ function Introduction() {
       <IntroductionBasic />
       <AboutMe />
       {/* <Achievements /> */}
+      <InquiryWall />
       <Arch />
 
       <Education />

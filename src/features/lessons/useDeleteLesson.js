@@ -15,7 +15,7 @@ export function useDeleteLesson() {
   const { isLoading: isDeleting, mutate: deleteLesson } = useMutation({
     mutationFn: apiDeleteLesson,
     onSuccess: () => {
-      toast.success("deleted");
+      toast.success("Lesson successfully deleted!");
       queryClient.invalidateQueries({ queryKey: "lessons" });
       navigate("/resources", { replace: true });
     },

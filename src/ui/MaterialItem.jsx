@@ -9,24 +9,40 @@ const StyledIcon = styled.div`
   flex-basis: 2rem;
 `;
 
-function MaterialItem({ file, hover }) {
+function MaterialItem({ file, hover, isCard }) {
   const index = file.name.indexOf("/"); // Find the index of the first occurrence of '/'
   let substring = file.name.substring(index + 1);
+  function handleClick(event) {}
 
-  substring = substring.substring(0, substring.lastIndexOf("."));
+  const text = substring.substring(0, substring.lastIndexOf("."));
   return (
     <StyledMaterialItem hover={hover}>
       <StyledIcon>
         <BsFileEarmarkText />
       </StyledIcon>
-      <a
-        href={file.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        key={file.id}
-      >
-        <Fancy color="grey-700">{substring}</Fancy>
-      </a>
+      {isCard ? (
+        <div
+          href={file.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          key={file.id}
+          onClick={handleClick}
+        >
+          <Fancy color="grey-700">
+            {text.length > 10 ? text.substring(0, 10) + "..." : text}
+          </Fancy>
+        </div>
+      ) : (
+        <a
+          href={file.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          key={file.id}
+          onClick={handleClick}
+        >
+          <Fancy color="grey-700">{text}</Fancy>
+        </a>
+      )}
     </StyledMaterialItem>
   );
 }

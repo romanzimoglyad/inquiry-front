@@ -4,17 +4,19 @@ import {
   useSubjects,
   useUnits,
   useConcepts,
-} from "../subjects/useDictionary";
+  useAll,
+} from "../dictionary/useDictionary";
 import Spinner from "../../ui/Spinner";
 import styled from "styled-components";
 import Filter from "../../ui/Filter";
 import Button from "../../ui/Button";
 import { useSearchParams } from "react-router-dom";
 import Input from "../../ui/Input";
+import { TYPE_SUBJECT } from "../../utils/constants";
 
 const StyledLessonsHeader = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 2rem;
 `;
 const Flex = styled.div`
@@ -42,14 +44,12 @@ const Text = styled.div`
 export default function LessonsHeader() {
   // create the animations that will be applied
   // whenever the open state is toggled
+
   const { search, setSearch } = useSearch("");
-  const { subjects, isLoading: subjectsLoading } = useSubjects();
-  const { units, isLoading: unitsLoading } = useUnits();
-  const { skills, isLoading: skillsLoading } = useSkills();
-  const { concepts, isLoading: conceptsLoading } = useConcepts();
+  const { dictionaries, isLoading: dictionariesLoading } = useAll();
+
   const [searchParams, setSearchParams] = useSearchParams();
-  if (subjectsLoading || unitsLoading || skillsLoading || conceptsLoading)
-    return <Spinner />;
+  if (dictionariesLoading) return <Spinner />;
 
   const anyFilter = searchParams.toString() === "" && search === "";
 
@@ -77,19 +77,57 @@ export default function LessonsHeader() {
       </Flex>
       <StyledLI>
         <Text>Unit</Text>
-        <Filter filterField="unit" options={units.pairs} />
+        <Filter
+          filterField="unit"
+          options={
+            dictionaries.dictionaries.filter((el) => el.type === "TYPE_UNIT")[0]
+              .pairs
+          }
+        />
       </StyledLI>
       <StyledLI>
         <Text>Concept</Text>
-        <Filter filterField="concept" options={concepts.pairs} />
+        <Filter
+          filterField="concept"
+          options={
+            dictionaries.dictionaries.filter(
+              (el) => el.type === "TYPE_CONCEPT"
+            )[0].pairs
+          }
+        />
       </StyledLI>
       <StyledLI>
         <Text>Subject</Text>
-        <Filter filterField="subject" options={subjects.pairs} />
+        <Filter
+          filterField="subject"
+          options={
+            dictionaries.dictionaries.filter(
+              (el) => el.type === "TYPE_SUBJECT"
+            )[0].pairs
+          }
+        />
       </StyledLI>
       <StyledLI>
         <Text>Skill</Text>
-        <Filter filterField="skill" options={skills.pairs} />
+        <Filter
+          filterField="skill"
+          options={
+            dictionaries.dictionaries.filter(
+              (el) => el.type === "TYPE_SKILL"
+            )[0].pairs
+          }
+        />
+      </StyledLI>
+      <StyledLI>
+        <Text>Grade</Text>
+        <Filter
+          filterField="grade"
+          options={
+            dictionaries.dictionaries.filter(
+              (el) => el.type === "TYPE_GRADE"
+            )[0].pairs
+          }
+        />
       </StyledLI>
       <Flex>
         <Button

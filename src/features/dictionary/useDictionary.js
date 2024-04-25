@@ -5,6 +5,21 @@ import { TYPE_SUBJECT } from "../../utils/constants";
 import { TYPE_UNIT } from "../../utils/constants";
 import { TYPE_SKILL } from "../../utils/constants";
 import { TYPE_CONCEPT } from "../../utils/constants";
+import { TYPE_ALL } from "../../utils/constants";
+
+export function useAll() {
+  const {
+    isLoading,
+    data: dictionaries,
+    error,
+  } = useQuery({
+    queryKey: ["subject"],
+    queryFn: () => getDictionary({ type: TYPE_ALL }),
+    cacheTime: 60000,
+  });
+
+  return { isLoading, error, dictionaries };
+}
 
 export function useSubjects() {
   const {

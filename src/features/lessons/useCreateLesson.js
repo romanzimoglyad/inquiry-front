@@ -7,7 +7,7 @@ export function useCreateLesson() {
   const { mutate: createLesson, isCreating } = useMutation({
     mutationFn: apiCreateLesson,
     onSuccess: () => {
-      toast.success("New lesson successfully created");
+      toast.success("New lesson successfully created!");
       queryClient.invalidateQueries({ queryKey: "lessons" });
     },
     onError: (err) => toast.error(err.message),

@@ -1,5 +1,5 @@
 import { API_URL } from "./inquiry";
-import { USER_ID } from "../utils/constants";
+import { PAGE_SIZE, USER_ID } from "../utils/constants";
 
 export async function createLesson(newLesson) {
   try {
@@ -208,7 +208,9 @@ export async function getLessons({
   unitValue,
   skillValue,
   conceptValue,
+  gradeValue,
   search,
+  page,
 }) {
   const request = {
     user_id: USER_ID,
@@ -217,9 +219,13 @@ export async function getLessons({
       unitId: unitValue,
       skillId: skillValue,
       conceptId: conceptValue,
+      gradeId: gradeValue,
       searchText: search,
     },
   };
+  if (page) {
+    request.page = { page: page, size: PAGE_SIZE };
+  }
 
   const res = await fetch(`${API_URL}/lesson/list`, {
     method: "POST",

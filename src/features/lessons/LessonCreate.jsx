@@ -9,14 +9,14 @@ import {
   BsFileEarmarkText,
   BsFileEarmarkPdf,
 } from "react-icons/bs";
+import { GiUpgrade } from "react-icons/gi";
+
 import { useMoveBack } from "../../hooks/useMoveBack";
 import Duration from "../../ui/Duration";
 import { MdOutlineSubject } from "react-icons/md";
 import { HiOutlineWrenchScrewdriver } from "react-icons/hi2";
 import { CiCalendarDate, CiMonitor } from "react-icons/ci";
 import { GiSkills } from "react-icons/gi";
-import Img from "../../ui/Img";
-import Line from "../../ui/Line";
 import Button from "../../ui/Button";
 import { StyledSelect } from "../../ui/Select";
 import { AiFillDelete } from "react-icons/ai";
@@ -36,16 +36,10 @@ import {
   LessonImg,
   HeadingGroup,
 } from "../../ui/Lesson";
-import {
-  useConcepts,
-  useSkills,
-  useSubjects,
-  useUnits,
-} from "../subjects/useDictionary";
+import { useAll } from "../dictionary/useDictionary";
 
 import Form from "../../ui/Form";
 import { useCreateLesson } from "./useCreateLesson";
-import Select from "../../ui/Select";
 
 import FormRow from "../../ui/FormRow";
 import Textarea from "../../ui/Textarea";
@@ -106,14 +100,10 @@ function LessonCreate() {
   const [img, setImg] = useState(null);
   const [imgPreview, setImgPreview] = useState(null);
   const { lessonId } = useParams();
-  console.log(lessonId);
   const { createLesson, isCreating } = useCreateLesson();
   const { updateLesson, isUpdating } = useUpdateLesson();
   const isEditSession = lessonId != "" && lessonId != undefined;
-  console.log(isEditSession);
   const { isLoading: lessonLoading, lesson } = useLesson();
-
-  console.log(lesson);
   const [files, setFiles] = useState([]);
 
   const oldMaterials = lesson?.lesson?.materials ? lesson.lesson.materials : [];
@@ -136,11 +126,8 @@ function LessonCreate() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   const navigate = useNavigate();
   const moveBack = useMoveBack();
-  const { subjects, isLoading: subjectsLoading } = useSubjects();
-  const { units, isLoading: unitsLoading } = useUnits();
-  const { skills, isLoading: skillsLoading } = useSkills();
-  const { concepts, isLoading: conceptsLoading } = useConcepts();
-  let lessonForEdit;
+
+  const { dictionaries, isLoading: dictionariesLoading } = useAll();
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -156,6 +143,7 @@ function LessonCreate() {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
+  let lessonForEdit;
   if (isEditSession) {
     lessonForEdit = {
       description: lesson?.lesson?.description,
@@ -167,32 +155,34 @@ function LessonCreate() {
       subjectId: lesson?.lesson?.subject?.id,
       imageUrl: lesson?.lesson?.image?.url,
     };
-    // if (lesson?.lesson?.materials) {
-    //   setOldFiles();
-    //   console.log(oldfiles);
-    // }
   }
-  console.log(lessonForEdit);
-  console.log(isEditSession);
+
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: isEditSession ? lessonForEdit : {},
   });
 
   const { errors } = formState;
 
-  if (
-    lessonLoading ||
-    subjectsLoading ||
-    unitsLoading ||
-    skillsLoading ||
-    conceptsLoading
-  )
-    return <Spinner />;
+  if (dictionariesLoading) return <Spinner />;
+
+  const subjects = dictionaries.dictionaries.filter(
+    (el) => el.type === "TYPE_SUBJECT"
+  )[0];
+  const units = dictionaries.dictionaries.filter(
+    (el) => el.type === "TYPE_UNIT"
+  )[0];
+  const skills = dictionaries.dictionaries.filter(
+    (el) => el.type === "TYPE_SKILL"
+  )[0];
+  const concepts = dictionaries.dictionaries.filter(
+    (el) => el.type === "TYPE_CONCEPT"
+  )[0];
+  const grades = dictionaries.dictionaries.filter(
+    (el) => el.type === "TYPE_GRADE"
+  )[0];
 
   const handleFileChange = (event) => {
-    console.log("");
     const file = event.target.files[0];
-    console.log(file);
     const reader = new FileReader();
 
     reader.onload = (e) => {
@@ -206,7 +196,7 @@ function LessonCreate() {
   function onSubmit(data) {
     if (isEditSession) {
       const image = img;
-      console.log(image);
+
       updateLesson(
         {
           newLessonData: {
@@ -226,7 +216,6 @@ function LessonCreate() {
       navigate("/resources");
     } else {
       const image = img;
-      console.log(image);
       createLesson(
         {
           ...data,
@@ -242,9 +231,7 @@ function LessonCreate() {
       navigate("/resources");
     }
   }
-  function onError(errors) {
-    //console.log(errors);
-  }
+  function onError(errors) {}
 
   const handleDeleteFile = (index) => {
     event.stopPropagation();
@@ -368,6 +355,26 @@ function LessonCreate() {
                   })}
                 >
                   {skills.pairs.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.name}
+                    </option>
+                  ))}
+                </StyledSelect>
+              </IconsItemText>
+            </IconsItem>
+            <IconsItem>
+              <IconsItemTop>
+                <GiUpgrade />
+                Grade
+              </IconsItemTop>
+              <IconsItemText>
+                <StyledSelect
+                  {...register("gradeId", {
+                    required: "This field is required",
+                    // validate: (value) => value !== "0",
+                  })}
+                >
+                  {grades.pairs.map((option) => (
                     <option key={option.id} value={option.id}>
                       {option.name}
                     </option>

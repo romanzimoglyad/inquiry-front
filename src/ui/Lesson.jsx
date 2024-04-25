@@ -34,7 +34,7 @@ export const StyledMain = styled.div`
 
 export const StyledIcons = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 1rem;
   padding: 2rem 4rem;
   justify-content: space-between;

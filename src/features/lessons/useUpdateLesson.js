@@ -7,8 +7,8 @@ export function useUpdateLesson() {
   const { mutate: updateLesson, isUpdating } = useMutation({
     mutationFn: ({ newLessonData, id }) => apiUpdateLesson(newLessonData, id),
     onSuccess: () => {
-      toast.success("lesson successfully edited");
-      queryClient.invalidateQueries({ queryKey: "cabins" });
+      toast.success("Lesson successfully edited!");
+      queryClient.invalidateQueries({ queryKey: "lessons" });
     },
     onError: (err) => toast.error(err.message),
   });
