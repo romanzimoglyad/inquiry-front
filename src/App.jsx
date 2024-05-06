@@ -12,6 +12,7 @@ import { SearchProvider } from "./context/SearchContext";
 import Lesson from "./pages/Lesson";
 import CreateLesson from "./pages/CreateLesson";
 import { Toaster } from "react-hot-toast";
+import ScrollToTop from "./ui/scroll";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +29,7 @@ function App() {
       <GlobalStyles />
       <SearchProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route element={<AppLayout />}>
               <Route index element={<Navigate replace to="introduction" />} />
