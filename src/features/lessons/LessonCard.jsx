@@ -33,7 +33,7 @@ const StyledLessonCard = styled.div`
   transition: all 0.4s;
   position: relative;
   &:hover {
-    transform: translateY(-1.2rem);
+    transform: translateY(-0.5rem);
     box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.15);
   }
   grid-template-rows: 150px auto;
@@ -112,7 +112,7 @@ const CardDescription = styled.div`
   border-bottom: 2px solid var(--color-brand-200);
   padding: 1.6rem 2.4rem;
   font-size: ${({ hover }) =>
-    hover ? "var(--font-size-llg)" : "var(--font-size-lg)"};
+    hover ? "var(--font-size-lg)" : "var(--font-size-lg)"};
   transition: font-size 0.3s ease;
 `;
 const CardImg = styled.div`

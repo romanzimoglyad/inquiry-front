@@ -38,6 +38,8 @@ import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaChildren } from "react-icons/fa6";
+import useToken from "../../hooks/auth";
 
 const Buttons = styled.div`
   display: flex;
@@ -47,6 +49,8 @@ const Buttons = styled.div`
 `;
 
 function LessonDetail() {
+  const { token, setToken } = useToken();
+  console.log(document.cookie);
   const navigate = useNavigate();
   const { isDeleting, deleteLesson } = useDeleteLesson();
   const { isLoading, lesson } = useLesson();
@@ -119,6 +123,13 @@ function LessonDetail() {
               </IconsItemTop>
               <IconsItemText>{skill.name}</IconsItemText>
             </IconsItem>
+            <IconsItem>
+              <IconsItemTop>
+                <FaChildren />
+                Grage
+              </IconsItemTop>
+              <IconsItemText>{gradeId}</IconsItemText>
+            </IconsItem>
           </StyledIcons>
           <LessonImg>
             <Img
@@ -145,19 +156,22 @@ function LessonDetail() {
             </StyledDate>
           </Footer>
         </StyledMain>
-        <Buttons type="horizontal">
-          <Button
-            variation="secondary"
-            onClick={() => {
-              navigate(`/lessons/create/${id}`);
-            }}
-          >
-            Edit
-          </Button>
-          <Modal.Open opens="delete">
-            <Button variation="danger">Delete</Button>
-          </Modal.Open>
-        </Buttons>
+        {token && (
+          <Buttons type="horizontal">
+            <Button
+              variation="secondary"
+              onClick={() => {
+                navigate(`/lessons/create/${id}`);
+              }}
+            >
+              Edit
+            </Button>
+            <Modal.Open opens="delete">
+              <Button variation="danger">Delete</Button>
+            </Modal.Open>
+          </Buttons>
+        )}
+
         <Modal.Window name="delete">
           <ConfirmDelete
             resourceName="lesson"

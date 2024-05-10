@@ -7,6 +7,7 @@ const StyledPagination = styled.div`
   width: 100%;
   display: flex;
   margin-top: 2rem;
+  padding-top: 2rem;
   align-items: center;
   justify-content: center;
   font-size: var(--font-size-llg);

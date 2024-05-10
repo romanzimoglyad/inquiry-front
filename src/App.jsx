@@ -13,6 +13,7 @@ import Lesson from "./pages/Lesson";
 import CreateLesson from "./pages/CreateLesson";
 import { Toaster } from "react-hot-toast";
 import ScrollToTop from "./ui/scroll";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,6 +46,7 @@ function App() {
               <Route path="contacts" element={<Contacts />} />
             </Route>
             <Route path="*" element={<PageNotFound />} />
+            <Route path="login" element={<Login />} />
           </Routes>
         </BrowserRouter>
       </SearchProvider>

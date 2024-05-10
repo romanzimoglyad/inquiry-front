@@ -4,7 +4,6 @@ import { SiStudyverse } from "react-icons/si";
 import HeaderNav from "./HeaderNav";
 import StyledNavLink from "./StyledNavLink";
 import Logo from "./Logo";
-
 const StyledHeader = styled.div`
   display: flex;
   align-items: center;
@@ -24,6 +23,7 @@ function Header() {
       <StyledNavLink to="/">
         <Logo></Logo>
       </StyledNavLink>
+
       <HeaderNav />
     </StyledHeader>
   );

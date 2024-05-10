@@ -2,6 +2,7 @@ import { SiStudyverse } from "react-icons/si";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import StyledNavLink from "./StyledNavLink";
+import UserAvatar from "../features/auth/UserAvatar";
 
 const StyledHeaderNav = styled.div`
   display: flex;
@@ -13,6 +14,7 @@ const StyledHeaderNav = styled.div`
 function HeaderNav() {
   return (
     <StyledHeaderNav>
+      <UserAvatar />
       <StyledNavLink to="/resources">Resources</StyledNavLink>
       <StyledNavLink to="/about">About</StyledNavLink>
       <StyledNavLink to="/contacts">Contact</StyledNavLink>

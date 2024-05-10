@@ -1,34 +1,52 @@
 import { API_URL } from "./inquiry";
 import { PAGE_SIZE, USER_ID } from "../utils/constants";
 
-export async function createLesson(newLesson) {
+export async function createLesson({ request: newLesson, token }) {
   try {
-    const id = await createOnlyLesson(newLesson);
+    let lesson = {
+      ...newLesson,
+      userId: USER_ID,
+    };
+
+    const res1 = await fetch(`${API_URL}/lesson/create`, {
+      method: "POST",
+      body: JSON.stringify(lesson),
+      headers: {
+        Authorization: `${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res1.ok) throw Error("Failed creating lesson");
+
+    const { id } = await res1.json();
     const res = await updateFiles(
       newLesson?.image,
       newLesson?.oldFiles,
       newLesson?.files,
-      id
+      id,
+      token
     );
     return res;
   } catch (error) {
     console.error("Error:", error);
+    throw error;
   }
 }
 
-export async function updateLesson(newLessonData, id) {
-  console.log(id);
+export async function updateLesson({ newLessonData, id, token }) {
   try {
-    const res1 = await updateOnlyLesson(newLessonData, id);
+    const res1 = await updateOnlyLesson(newLessonData, id, token);
     await updateFiles(
       newLessonData.image,
       newLessonData.oldFiles,
       newLessonData.files,
-      id
+      id,
+      token
     );
     return res1;
   } catch (error) {
     console.error("Error:", error);
+    throw error;
   }
 }
 
@@ -66,9 +84,7 @@ export async function updateLesson(newLessonData, id) {
 //   }
 // }
 
-async function updateFiles(image, oldFiles, files, id) {
-  console.log(oldFiles);
-  console.log(files);
+async function updateFiles(image, oldFiles, files, id, token) {
   try {
     const formData = new FormData();
     if (image) {
@@ -97,6 +113,9 @@ async function updateFiles(image, oldFiles, files, id) {
     const res = await fetch(`${API_URL}/lesson/file`, {
       method: "POST",
       body: formData,
+      headers: {
+        Authorization: `${token}`,
+      },
     });
 
     // fetch won't throw error on 400 errors (e.g. when URL is wrong), so we need to do it manually. This will then go into the catch block, where the message is set
@@ -108,10 +127,11 @@ async function updateFiles(image, oldFiles, files, id) {
     return;
   } catch (error) {
     console.error("Error:", error);
+    throw error; // Propagate the error
   }
 }
 
-async function updateOnlyLesson(newLesson, id) {
+async function updateOnlyLesson(newLesson, id, token) {
   console.log(newLesson);
   try {
     let lesson = {
@@ -124,10 +144,11 @@ async function updateOnlyLesson(newLesson, id) {
       method: "POST",
       body: JSON.stringify(lesson),
       headers: {
+        Authorization: `${token}`,
         "Content-Type": "application/json",
       },
     });
-
+    if (!res.ok) throw Error("Failed update lesson");
     const { resp } = await res.json();
     return resp;
   } catch (error) {
@@ -136,30 +157,8 @@ async function updateOnlyLesson(newLesson, id) {
   }
 }
 
-async function createOnlyLesson(newLesson) {
-  try {
-    let lesson = {
-      ...newLesson,
-      userId: USER_ID,
-    };
-
-    const res = await fetch(`${API_URL}/lesson/create`, {
-      method: "POST",
-      body: JSON.stringify(lesson),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const { id } = await res.json();
-    return id;
-  } catch (error) {
-    console.error("Error fetching data from first API:", error);
-    throw error; // Propagate the error
-  }
-}
-
-export async function deleteLesson(id) {
+export async function deleteLesson({ id, token }) {
+  console.log(token);
   const request = {
     user_id: USER_ID,
     id: id,
@@ -169,6 +168,7 @@ export async function deleteLesson(id) {
     method: "POST",
     body: JSON.stringify(request),
     headers: {
+      Authorization: `${token}`,
       "Content-Type": "application/json",
     },
   });

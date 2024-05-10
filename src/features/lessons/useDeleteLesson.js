@@ -8,12 +8,14 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useSearch } from "../../context/SearchContext";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import useToken from "../../hooks/auth";
 
 export function useDeleteLesson() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { token } = useToken();
   const { isLoading: isDeleting, mutate: deleteLesson } = useMutation({
-    mutationFn: apiDeleteLesson,
+    mutationFn: (id) => apiDeleteLesson({ id, token }),
     onSuccess: () => {
       toast.success("Lesson successfully deleted!");
       queryClient.invalidateQueries({ queryKey: "lessons" });

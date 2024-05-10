@@ -52,6 +52,7 @@ import { useDropzone } from "react-dropzone";
 import FileInput from "../../ui/FileInput";
 import { useLesson } from "./useLesson";
 import { useUpdateLesson } from "./useUpdateLesson";
+import { FaChildren } from "react-icons/fa6";
 
 const StyledTrashBin = styled.div`
   color: red;
@@ -154,6 +155,7 @@ function LessonCreate() {
       skillId: lesson?.lesson?.skill?.id,
       subjectId: lesson?.lesson?.subject?.id,
       imageUrl: lesson?.lesson?.image?.url,
+      gradeId: lesson?.lesson?.gradeId,
     };
   }
 
@@ -213,7 +215,7 @@ function LessonCreate() {
           },
         }
       );
-      navigate("/resources");
+      moveBack();
     } else {
       const image = img;
       createLesson(
@@ -364,7 +366,7 @@ function LessonCreate() {
             </IconsItem>
             <IconsItem>
               <IconsItemTop>
-                <GiUpgrade />
+                <FaChildren />
                 Grade
               </IconsItemTop>
               <IconsItemText>
